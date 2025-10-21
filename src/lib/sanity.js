@@ -2,19 +2,24 @@
 import { createClient } from 'next-sanity';
 import imageUrlBuilder from '@sanity/image-url';
 
-export const config = {
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
-  apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2023-10-17',
-  useCdn: process.env.NODE_ENV === 'production',
-};
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
+const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2023-10-17';
+const useCdn = process.env.NODE_ENV === 'production';
 
-export const sanityClient = createClient(config);
+export const config = { projectId, dataset, apiVersion, useCdn };
 
-export const urlFor = (source) => imageUrlBuilder(config).image(source);
+// 🧩 Safely create client only if env vars are present
+export const sanityClient =
+  projectId && dataset ? createClient(config) : null;
 
-// Fetch all films
+// 🖼️ URL builder also guarded
+export const urlFor = (source) =>
+  projectId ? imageUrlBuilder(config).image(source) : null;
+
+// 🗂️ Fetch all films
 export async function getFilms() {
+  if (!sanityClient) return [];
   return sanityClient.fetch(`
     *[_type == "film"] | order(year desc) {
       _id,
@@ -31,10 +36,11 @@ export async function getFilms() {
   `);
 }
 
-// Fetch a single film by slug (using title as slug)
+// 🎞️ Fetch a single film by title
 export async function getFilm(slug) {
-  const films = await sanityClient.fetch(`
-    *[_type == "film" && title == $title] {
+  if (!sanityClient) return null;
+  const films = await sanityClient.fetch(
+    `*[_type == "film" && title == $title] {
       _id,
       title,
       year,
@@ -45,8 +51,8 @@ export async function getFilm(slug) {
       youtubeUrl,
       images,
       relatedFilms
-    }
-  `, { title: slug });
-  
+    }`,
+    { title: slug }
+  );
   return films[0] || null;
 }
