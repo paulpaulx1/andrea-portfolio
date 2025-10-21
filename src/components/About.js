@@ -28,8 +28,13 @@ export default function About() {
       <h2 className="text-xl font-semibold mt-8 mb-2">Contact</h2>
       <p>
         For inquiries about Andrea Callard&apos;s work, screenings, or other
-        information, please contact: href="mailto:andreacallard@gmail.com"
-        className="text-blue-600 hover:underline" andreacallard@gmail.com
+        information, please contact:{' '}
+        <a
+          href="mailto:andreacallard@gmail.com"
+          className="text-blue-600 hover:underline"
+        >
+          andreacallard@gmail.com
+        </a>
       </p>
     </div>
   );
