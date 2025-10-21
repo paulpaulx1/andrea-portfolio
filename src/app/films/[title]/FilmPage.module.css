@@ -1,0 +1,82 @@
+/* src/app/films/FilmPage.module.css */
+
+.wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 0 6rem;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.meta {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.imageContainer {
+  width: 100%;
+  margin: 0 auto 1.5rem;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.imageContainer img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.videoWrapper {
+  position: relative;
+  padding-top: 56.25%; /* 16:9 */
+  margin-bottom: 2rem;
+  background: #000;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.videoWrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #222;
+  white-space: pre-line;
+  margin-top: 2rem;
+}
+
+.imagesGrid {
+  margin-top: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.imageWrap {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #f5f5f5;
+}
+
+.imageWrap :global(img) {
+  object-fit: contain;
+  width: 100%;
+  height: auto;
+  display: block;
+}

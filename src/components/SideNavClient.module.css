@@ -1,0 +1,57 @@
+.nav {
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.topButton {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #111;
+  font: inherit;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  text-transform: lowercase;
+}
+
+.topButton:hover {
+  text-decoration: underline;
+}
+
+.list {
+  margin-top: 0.75rem;
+  padding-left: 1.25rem;
+}
+
+.itemButton {
+  display: block;
+  width: 100%;
+  padding: 0.2rem 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: #111;
+  text-align: left;
+  cursor: pointer;
+}
+
+.itemButton:hover {
+  text-decoration: underline;
+}
+
+.active {
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.placeholder {
+  color: #888;
+  font-size: 0.9rem;
+}

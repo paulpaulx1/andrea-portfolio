@@ -7,7 +7,12 @@ const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
 const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2023-10-17';
 const useCdn = process.env.NODE_ENV === 'production';
 
-export const config = { projectId, dataset, apiVersion, useCdn };
+export const config = { 
+  projectId, 
+  dataset, 
+  apiVersion, 
+  useCdn: false  // Always false for server-side to get fresh content
+};
 
 // 🧩 Safely create client only if env vars are present
 export const sanityClient =
