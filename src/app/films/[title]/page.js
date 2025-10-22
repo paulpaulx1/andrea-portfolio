@@ -1,28 +1,30 @@
 // app/films/[title]/page.js
 import Image from "next/image";
 import { sanityClient } from "@lib/sanity";
-import styles from './FilmPage.module.css'
+import { PortableText } from "@portabletext/react";
+import styles from "./FilmPage.module.css";
 export const revalidate = 3600;
 
 export default async function FilmPage({ params }) {
   const { title } = params;
 
   const query = `
-    *[_type == "film" && title == $title][0] {
-      _id,
-      title,
-      year,
-      duration,
-      type,
-      description,
-      archiveUrl,
-      youtubeUrl,
-      images[]{
-        asset->{ url, metadata { dimensions } }
-      },
-      relatedFilms
-    }
-  `;
+  *[_type == "film" && title == $title][0] {
+    _id,
+    title,
+    year,
+    duration,
+    type,
+    description,
+    descriptionRich,  // Add this line to fetch the rich text field
+    archiveUrl,
+    youtubeUrl,
+    images[]{
+      asset->{ url, metadata { dimensions } }
+    },
+    relatedFilms
+  }
+`;
 
   const film = await sanityClient.fetch(query, {
     title: decodeURIComponent(title),
@@ -47,8 +49,16 @@ export default async function FilmPage({ params }) {
         </p>
       </header>
 
-      {film.description && (
-        <p className="text-gray-800 whitespace-pre-line">{film.description}</p>
+      {film.descriptionRich ? (
+        <div className="text-slate-800">
+          <PortableText value={film.descriptionRich} />
+        </div>
+      ) : (
+        film.description && (
+          <p className="text-gray-800 whitespace-pre-line">
+            {film.description}
+          </p>
+        )
       )}
 
       {/* external links */}
