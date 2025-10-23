@@ -10,6 +10,7 @@ export default function SideNavClient() {
   const [loadingFilms, setLoadingFilms] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   // auto-expand when on /films/*
   useEffect(() => {
@@ -30,7 +31,22 @@ export default function SideNavClient() {
         })();
       }
     }
-  }, [pathname]);
+  }, [pathname, films.length]);
+
+  // Track mobile state for responsive behavior
+  useEffect(() => {
+    const handleResize = () => {
+      // This will cause a re-render when crossing the mobile breakpoint
+      if ((window.innerWidth < 768 && !isMobile) || 
+          (window.innerWidth >= 768 && isMobile)) {
+        // Force re-render by updating a state
+        setFilmsExpanded(prev => pathname.startsWith('/films') ? true : prev);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMobile, pathname]);
 
   const toggleFilms = async () => {
     if (filmsExpanded) {
@@ -47,10 +63,19 @@ export default function SideNavClient() {
     }
   };
 
+  const handleNavigation = (path) => {
+    router.push(path);
+    // If on mobile, possibly close the menu after navigation
+    // This would be handled by the parent MobileNav component
+  };
+
   return (
     <nav className={styles.nav}>
       <div className={styles.section}>
-        <button className={styles.topButton} onClick={() => router.push('/')}>
+        <button 
+          className={`${styles.topButton} ${pathname === '/' ? styles.active : ''}`} 
+          onClick={() => handleNavigation('/')}
+        >
           About
         </button>
       </div>
@@ -75,7 +100,7 @@ export default function SideNavClient() {
                 <button
                   key={film._id}
                   onClick={() =>
-                    router.push(`/films/${encodeURIComponent(film.title)}`)
+                    handleNavigation(`/films/${encodeURIComponent(film.title)}`)
                   }
                   className={`${styles.itemButton} ${
                     isActive ? styles.active : ''

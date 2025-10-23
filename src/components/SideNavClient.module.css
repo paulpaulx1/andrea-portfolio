@@ -1,3 +1,4 @@
+/* components/SideNavClient.module.css */
 .nav {
   font-size: 0.95rem;
   line-height: 1.7;
@@ -23,6 +24,11 @@
 
 .topButton:hover {
   text-decoration: underline;
+}
+
+.topButton.active {
+  text-decoration: underline;
+  font-weight: 600;
 }
 
 .list {
@@ -54,4 +60,24 @@
 .placeholder {
   color: #888;
   font-size: 0.9rem;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 767px) {
+  .nav {
+    width: 100%;
+  }
+  
+  .section {
+    margin-bottom: 1.5rem;
+  }
+  
+  .topButton {
+    padding: 0.5rem 0;
+    font-size: 1.1rem;
+  }
+  
+  .itemButton {
+    padding: 0.4rem 0;
+  }
 }

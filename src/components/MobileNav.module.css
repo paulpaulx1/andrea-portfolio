@@ -1,0 +1,35 @@
+/* components/MobileNav.module.css */
+.mobileNav {
+  display: none; /* Hidden by default, shown in media query */
+}
+
+.hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  z-index: 100;
+}
+
+.mobileMenu {
+  display: none;
+  width: 100%;
+  padding-top: 1rem;
+}
+
+.mobileMenu.open {
+  display: block;
+}
+
+/* Media query for mobile view */
+@media (max-width: 767px) {
+  .mobileNav {
+    display: block;
+  }
+}

@@ -1,0 +1,12 @@
+/* app/about/page.module.css */
+.container {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0.5rem 1rem;
+  }
+}

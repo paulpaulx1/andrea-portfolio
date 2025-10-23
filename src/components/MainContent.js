@@ -1,7 +1,7 @@
 // src/components/MainContent.js
 'use client';
 
-import About from './About';
+import About from './AboutContent';
 
 /**
  * MainContent

@@ -1,8 +1,8 @@
-// src/components/About.js
-export default function About() {
+// components/AboutContent.jsx
+export default function AboutContent() {
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold border-b pb-4">About Andrea Callard</h1>
+      <h2 className="text-2xl font-bold border-b pb-4">About Andrea Callard</h2>
 
       <p>
         Andrea Callard is a filmmaker, photographer, and artist whose work spans
@@ -25,7 +25,7 @@ export default function About() {
         absurdity of explanation, and the limits of the measuring mind.
       </p>
 
-      <h2 className="text-xl font-semibold mt-8 mb-2">Contact</h2>
+      <h3 className="text-xl font-semibold mt-8 mb-2">Contact</h3>
       <p>
         For inquiries about Andrea Callard&apos;s work, screenings, or other
         information, please contact:{' '}
