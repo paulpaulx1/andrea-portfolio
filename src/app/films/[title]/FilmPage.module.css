@@ -1,4 +1,4 @@
-/* src/app/films/FilmPage.module.css */
+/* Updated FilmPage.module.css */
 
 .wrapper {
   max-width: 960px;
@@ -35,13 +35,16 @@
   display: block;
 }
 
+/* Enhanced video player styling */
 .videoWrapper {
   position: relative;
-  padding-top: 56.25%; /* 16:9 */
+  padding-top: 56.25%; /* 16:9 aspect ratio */
   margin-bottom: 2rem;
   background: #000;
-  border-radius: 4px;
+  border-radius: 8px;
   overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 1.5rem;
 }
 
 .videoWrapper iframe {

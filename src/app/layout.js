@@ -1,3 +1,5 @@
+// app/layout.js
+import Link from "next/link";
 import "./globals.css";
 import SideNavClient from "@components/SideNavClient";
 
@@ -12,7 +14,11 @@ export default function RootLayout({ children }) {
       <body>
         <div className="layout">
           <aside className="sidebar">
-            <h1 className="site-title">andrea callard</h1>
+            <h1 className="site-title">
+              <Link href="/" className="site-title-link">
+                andrea callard
+              </Link>
+            </h1>
             <SideNavClient />
           </aside>
           <main className="main">{children}</main>

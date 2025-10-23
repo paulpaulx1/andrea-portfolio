@@ -97,6 +97,22 @@ export default function SideNavClient() {
           Avocet Portfolio
         </button>
       </div>
+      <div className={styles.section}>
+        <button
+          className={styles.topButton}
+          onClick={() => alert('Archive coming soon!')}
+        >
+          Archive
+        </button>
+      </div>
+      <div className={styles.section}>
+        <button
+          className={styles.topButton}
+          onClick={() => alert('Information coming soon!')}
+        >
+          Information
+        </button>
+      </div>
     </nav>
   );
 }
