@@ -2,6 +2,7 @@
 import { sanityClient } from "@lib/sanity";
 import SmoothCarousel from "@components/SmoothCarousel";
 import AboutContent from "@components/AboutContent";
+import EmblaCarousel from "@components/EmblaCarousel";
 import styles from "./page.module.css";
 
 // Revalidate every hour
@@ -39,10 +40,13 @@ export default async function Home() {
       {/* Carousel Section */}
       {carouselImages.length > 0 ? (
         <div className={styles.carouselWrapper}>
-          <SmoothCarousel 
+          {/* <SmoothCarousel 
             images={carouselImages} 
             autoplaySpeed={homepageData?.autoplaySpeed || 5000} 
-          />
+          /> */}
+          <EmblaCarousel
+          images={carouselImages}
+        />
         </div>
       ) : (
         <div className={styles.placeholder}>

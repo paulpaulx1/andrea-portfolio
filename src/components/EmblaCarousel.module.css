@@ -1,0 +1,65 @@
+.embla {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 8px; /* 👈 visible rounding */
+}
+
+/* The visible viewport wrapper */
+.embla__viewport {
+  overflow: hidden;
+  border-radius: 8px; /* 👈 ensures clipping to round corners */
+  cursor: grab;       /* 👈 visible hover grab */
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+}
+
+.embla__viewport:active {
+  cursor: grabbing;   /* 👈 while dragging */
+}
+
+.embla__container {
+  display: flex;
+}
+
+.embla__slide {
+  position: relative;
+  flex: 0 0 100%;
+  min-width: 0;
+  aspect-ratio: 3/2;
+  overflow: hidden;
+}
+
+.embla__slide :global(img) {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* dots */
+.dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.dotActive {
+  background: white;
+  transform: scale(1.2);
+}
