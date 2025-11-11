@@ -1,7 +1,6 @@
-'use client';
-
 // app/films/[title]/FilmPageClient.jsx
-import { useState } from 'react';
+'use client';
+import { useState } from "react";
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 import styles from "./FilmPage.module.css";
@@ -12,13 +11,13 @@ import Lightbox from "@components/Lightbox";
 export default function FilmPageClient({ film }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  
+
   // Function to open the lightbox
   const openLightbox = (index) => {
     setLightboxIndex(index);
     setLightboxOpen(true);
   };
-  
+
   // Function to close the lightbox
   const closeLightbox = () => {
     setLightboxOpen(false);
@@ -45,23 +44,17 @@ export default function FilmPageClient({ film }) {
 
       {/* Video player for either Archive.org or YouTube */}
       {hasVideo && (
-        <VideoPlayer 
-          archiveUrl={film.archiveUrl} 
-          youtubeUrl={film.youtubeUrl} 
+        <VideoPlayer
+          archiveUrl={film.archiveUrl}
+          youtubeUrl={film.youtubeUrl}
         />
       )}
 
-      {/* Film description */}
-      {film.descriptionRich ? (
+      {/* Film description - only using rich text now */}
+      {film.description && film.description.length > 0 && (
         <div className="text-slate-800">
           <PortableText value={film.descriptionRich} />
         </div>
-      ) : (
-        film.description && (
-          <p className="text-gray-800 whitespace-pre-line">
-            {film.description}
-          </p>
-        )
       )}
 
       {/* If there is a video, show carousel after the text */}

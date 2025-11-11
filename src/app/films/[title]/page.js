@@ -28,7 +28,7 @@ export default async function FilmPage({ params }) {
   const film = await sanityClient.fetch(query, {
     title: decodeURIComponent(title),
   });
-
+  console.log(film);
   if (!film) {
     return (
       <div className="max-w-3xl mx-auto p-8">
