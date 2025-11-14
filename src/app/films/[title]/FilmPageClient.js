@@ -69,7 +69,7 @@ export default function FilmPageClient({ film }) {
       )}
 
       {/* External links */}
-      <div className="space-x-4">
+      {/* <div className="space-x-4">
         {film.archiveUrl && ( 
           <a
             href={film.archiveUrl}
@@ -90,7 +90,7 @@ export default function FilmPageClient({ film }) {
             Watch on YouTube
           </a>
         )}
-      </div>
+      </div> */}
 
       {/* Lightbox for full-screen images */}
       {lightboxOpen && (
