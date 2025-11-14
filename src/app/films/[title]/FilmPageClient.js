@@ -12,6 +12,12 @@ export default function FilmPageClient({ film }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
+  // Use enhanced images if available, otherwise fall back to legacy images
+  // Enhanced images have { image, alt, caption } structure, so extract just the image
+  const images = film.enhancedImages?.length > 0
+    ? film.enhancedImages.map(item => item.image)
+    : film.images || [];
+
   // Function to open the lightbox
   const openLightbox = (index) => {
     setLightboxIndex(index);
@@ -38,8 +44,8 @@ export default function FilmPageClient({ film }) {
 
       {/* Conditional rendering based on video presence */}
       {/* If no video, show carousel at the top */}
-      {!hasVideo && film.images?.length > 0 && (
-        <ImageCarousel images={film.images} openLightbox={openLightbox} />
+      {!hasVideo && images.length > 0 && (
+        <ImageCarousel images={images} openLightbox={openLightbox} />
       )}
 
       {/* Video player for either Archive.org or YouTube */}
@@ -51,20 +57,20 @@ export default function FilmPageClient({ film }) {
       )}
 
       {/* Film description - only using rich text now */}
-      {film.description && film.description.length > 0 && (
+      {film.descriptionRich && film.descriptionRich.length > 0 && (
         <div className="text-slate-800">
           <PortableText value={film.descriptionRich} />
         </div>
       )}
 
       {/* If there is a video, show carousel after the text */}
-      {hasVideo && film.images?.length > 0 && (
-        <ImageCarousel images={film.images} openLightbox={openLightbox} />
+      {hasVideo && images.length > 0 && (
+        <ImageCarousel images={images} openLightbox={openLightbox} />
       )}
 
       {/* External links */}
       <div className="space-x-4">
-        {film.archiveUrl && (
+        {film.archiveUrl && ( 
           <a
             href={film.archiveUrl}
             target="_blank"
@@ -89,7 +95,7 @@ export default function FilmPageClient({ film }) {
       {/* Lightbox for full-screen images */}
       {lightboxOpen && (
         <Lightbox
-          images={film.images}
+          images={images}
           initialIndex={lightboxIndex}
           onClose={closeLightbox}
         />

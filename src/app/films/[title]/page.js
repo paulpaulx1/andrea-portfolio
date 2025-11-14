@@ -21,6 +21,20 @@ export default async function FilmPage({ params }) {
     images[]{
       asset->{ url, metadata { dimensions } }
     },
+    enhancedImages[] {
+    _key,
+    image {
+      asset->{
+        _id,
+        url,
+        metadata {
+          dimensions
+        }
+      }
+    },
+    alt,
+    caption
+  },
     relatedFilms
   }
 `;
