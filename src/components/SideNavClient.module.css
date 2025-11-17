@@ -1,83 +1,102 @@
 /* components/SideNavClient.module.css */
 .nav {
-  font-size: 0.95rem;
-  line-height: 1.7;
+    font-size: 0.95rem;
+    line-height: 1.7;
 }
 
 .section {
-  margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .topButton {
-  display: block;
-  width: 100%;
-  padding: 0;
-  border: none;
-  background: none;
-  color: #666;
-  font: inherit;
-  font-weight: 500;
-  text-align: left;
-  cursor: pointer;
-  text-transform: lowercase;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #666;
+    font: inherit;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    text-transform: lowercase;
 }
 
 .topButton:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .topButton.active {
-  text-decoration: underline;
-  font-weight: 600;
+    text-decoration: underline;
+    font-weight: 600;
 }
 
 .list {
-  margin-top: 0.75rem;
-  padding-left: 1.25rem;
+    margin-top: 0.75rem;
+    padding-left: 1.25rem;
 }
 
 .itemButton {
-  display: block;
-  width: 100%;
-  padding: 0.2rem 0;
-  border: none;
-  background: none;
-  font: inherit;
-  color: #666;
-  text-align: left;
-  cursor: pointer;
+    display: block;
+    width: 100%;
+    padding: 0.2rem 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: #666;
+    text-align: left;
+    cursor: pointer;
 }
 
 .itemButton:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .active {
-  text-decoration: underline;
-  font-weight: 500;
+    text-decoration: underline;
+    font-weight: 500;
 }
 
 .placeholder {
-  color: #888;
-  font-size: 0.9rem;
+    color: #888;
+    font-size: 0.9rem;
 }
 
 /* Mobile-specific adjustments */
 @media (max-width: 767px) {
-  .nav {
-    width: 100%;
-  }
-  
-  .section {
-    margin-bottom: 1.5rem;
-  }
-  
-  .topButton {
-    padding: 0.5rem 0;
-    font-size: 1.1rem;
-  }
-  
-  .itemButton {
-    padding: 0.4rem 0;
-  }
+    .nav {
+        width: 100%;
+    }
+
+    .section {
+        margin-bottom: 1.5rem;
+    }
+
+    .topButton {
+        padding: 0.5rem 0;
+        font-size: 1.1rem;
+    }
+
+    .itemButton {
+        padding: 0.4rem 0;
+    }
+}
+
+.nestedList {
+    margin-left: 1rem;
+    padding-left: 0.5rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Nested button styling */
+.itemButton.nested {
+    font-size: 0.9em;
+    padding-left: 0.75rem;
+}
+
+/* Optional: Add subtle indentation indicator */
+.nestedList .itemButton::before {
+    content: '→';
+    margin-right: 0.5rem;
+    opacity: 0.5;
 }

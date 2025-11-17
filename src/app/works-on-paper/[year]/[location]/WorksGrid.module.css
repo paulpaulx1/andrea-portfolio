@@ -1,0 +1,109 @@
+/* app/works-on-paper/[year]/[location]/WorksGrid.module.css */
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.header {
+    margin-bottom: 3rem;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+.description {
+    max-width: 800px;
+    margin: 1.5rem 0;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.workCount {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 1rem;
+}
+
+/* Masonry Grid Layout */
+.grid {
+    column-count: 3;
+    column-gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+    .grid {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 640px) {
+    .grid {
+        column-count: 1;
+    }
+}
+
+.gridItem {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    break-inside: avoid;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.2s ease;
+}
+
+.gridItem:hover {
+    opacity: 0.85;
+}
+
+.imageWrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 2px;
+}
+
+.image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+.itemInfo {
+    padding: 0.75rem 0;
+}
+
+.itemTitle {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0.25rem;
+}
+
+.itemMeta {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0.125rem 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .header {
+        margin-bottom: 2rem;
+    }
+}
