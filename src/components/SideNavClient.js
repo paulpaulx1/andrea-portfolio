@@ -14,6 +14,11 @@ export default function SideNavClient() {
   const [loadingWorks, setLoadingWorks] = useState(false);
   const [expandedYears, setExpandedYears] = useState({});
 
+  const [avocetExpanded, setAvocetExpanded] = useState(false);
+  const [avocetArtists, setAvocetArtists] = useState([]);
+  const [loadingAvocet, setLoadingAvocet] = useState(false);
+  const [avocetManuallyClosed, setAvocetManuallyClosed] = useState(false);
+
   const router = useRouter();
   const pathname = usePathname();
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
@@ -53,7 +58,6 @@ export default function SideNavClient() {
             const data = await res.json();
             setWorksGroups(data.byYear || {});
 
-            // Auto-expand the year if we're on a specific portfolio page
             const match = pathname.match(/^\/works-on-paper\/(\d+)/);
             if (match) {
               const year = match[1];
@@ -66,7 +70,6 @@ export default function SideNavClient() {
           }
         })();
       } else {
-        // If groups are already loaded, just expand the relevant year
         const match = pathname.match(/^\/works-on-paper\/(\d+)/);
         if (match) {
           const year = match[1];
@@ -75,6 +78,28 @@ export default function SideNavClient() {
       }
     }
   }, [pathname]);
+
+  // auto-expand when on /avocet-portfolio/*
+  useEffect(() => {
+    const inAvocet = pathname.startsWith("/avocet-portfolio");
+
+    if (inAvocet) {
+      if (!avocetExpanded && !avocetManuallyClosed) {
+        setAvocetExpanded(true);
+      }
+
+      if (avocetArtists.length === 0 && !loadingAvocet) {
+        setLoadingAvocet(true);
+        fetch("/api/avocet-portfolio/artists", { cache: "force-cache" })
+          .then((res) => res.json())
+          .then((data) => setAvocetArtists(data.artists || []))
+          .finally(() => setLoadingAvocet(false));
+      }
+    } else {
+      // Reset this ONLY when leaving the entire Avocet section
+      setAvocetManuallyClosed(false);
+    }
+  }, [pathname]); // <-- ONLY pathname!
 
   // Track mobile state for responsive behavior
   useEffect(() => {
@@ -88,6 +113,9 @@ export default function SideNavClient() {
         );
         setWorksExpanded((prev) =>
           pathname.startsWith("/works-on-paper") ? true : prev
+        );
+        setAvocetExpanded((prev) =>
+          pathname.startsWith("/avocet-portfolio") ? true : prev
         );
       }
     };
@@ -114,7 +142,7 @@ export default function SideNavClient() {
   const toggleWorks = async () => {
     if (worksExpanded) {
       setWorksExpanded(false);
-      setExpandedYears({}); // Collapse all years when closing
+      setExpandedYears({});
       return;
     }
     setWorksExpanded(true);
@@ -129,6 +157,25 @@ export default function SideNavClient() {
     }
   };
 
+  const toggleAvocet = async () => {
+    if (avocetExpanded) {
+      setAvocetExpanded(false);
+      setAvocetManuallyClosed(true); // Mark as manually closed
+      return;
+    }
+    setAvocetExpanded(true);
+    setAvocetManuallyClosed(false); // Reset the flag
+    if (avocetArtists.length === 0) {
+      setLoadingAvocet(true);
+      const res = await fetch("/api/avocet-portfolio/artists", {
+        cache: "force-cache",
+      });
+      const data = await res.json();
+      setAvocetArtists(data.artists || []);
+      setLoadingAvocet(false);
+    }
+  };
+
   const toggleYear = (year) => {
     setExpandedYears((prev) => ({
       ...prev,
@@ -140,7 +187,6 @@ export default function SideNavClient() {
     router.push(path);
   };
 
-  // Sort years in descending order
   const sortedYears = Object.keys(worksGroups).sort(
     (a, b) => parseInt(b) - parseInt(a)
   );
@@ -242,13 +288,38 @@ export default function SideNavClient() {
       </div>
 
       <div className={styles.section}>
-        <button
-          className={styles.topButton}
-          onClick={() => alert("Avocet Portfolio coming soon!")}
-        >
+        <button className={styles.topButton} onClick={toggleAvocet}>
           Avocet Portfolio
         </button>
+
+        {avocetExpanded && (
+          <div className={styles.list}>
+            {loadingAvocet && (
+              <div className={styles.placeholder}>Loading…</div>
+            )}
+            {!loadingAvocet && avocetArtists.length === 0 && (
+              <div className={styles.placeholder}>No artists yet</div>
+            )}
+            {avocetArtists.map((artist) => {
+              const isActive = pathname === `/avocet-portfolio/${artist.slug}`;
+              return (
+                <button
+                  key={artist._id}
+                  onClick={() =>
+                    handleNavigation(`/avocet-portfolio/${artist.slug}`)
+                  }
+                  className={`${styles.itemButton} ${
+                    isActive ? styles.active : ""
+                  }`}
+                >
+                  {artist.firstName} {artist.lastName}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
+
       <div className={styles.section}>
         <button
           className={styles.topButton}

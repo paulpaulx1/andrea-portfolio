@@ -68,6 +68,39 @@ export async function POST(request) {
       }
     }
 
+    // Handle Avocet Artist documents
+    if (body._type === "avocetArtist") {
+      // Revalidate landing page
+      revalidatePath("/avocet-portfolio");
+
+      // Artist page
+      if (body.slug?.current) {
+        revalidatePath(`/avocet-portfolio/${body.slug.current}`);
+      }
+
+      // Also refresh API if you create one for artists
+      revalidatePath("/api/avocet-portfolio/artists");
+    }
+
+    // Handle Avocet Artwork documents
+    if (body._type === "avocetArtwork") {
+      // Always revalidate landing page
+      revalidatePath("/avocet-portfolio");
+
+      const artistSlug = body.artist?.slug?.current;
+      const artworkSlug = body.slug?.current;
+
+      // Revalidate artist page
+      if (artistSlug) {
+        revalidatePath(`/avocet-portfolio/${artistSlug}`);
+      }
+
+      // Revalidate the specific artwork detail page
+      if (artistSlug && artworkSlug) {
+        revalidatePath(`/avocet-portfolio/${artistSlug}/${artworkSlug}`);
+      }
+    }
+
     return NextResponse.json({
       success: true,
       revalidated: true,

@@ -1,0 +1,47 @@
+.gridWrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2.5rem;
+    margin-top: 2rem;
+}
+
+/* Thumbnail container */
+.thumb {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: #f1f5f9;
+    /* slate-100 */
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+/* Thumbnail images */
+.thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.25s ease;
+}
+
+.thumb:hover img {
+    transform: scale(1.06);
+}
+
+/* Artist names */
+.artistName {
+    text-align: center;
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+    color: #334155;
+    /* slate-700 */
+}
+
+.artistName:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+    .gridWrapper {
+        gap: 2rem;
+    }
+}
