@@ -1,8 +1,6 @@
 // app/works-on-paper/[year]/[location]/page.jsx
 import { sanityClient } from "@lib/sanity";
-import { PortableText } from "@portabletext/react";
-import Image from "next/image";
-import Link from "next/link";
+import WorksGridClient from "./WorksGridClient";
 import styles from "./WorksGrid.module.css";
 
 export const revalidate = 300; // 5 minutes
@@ -47,7 +45,7 @@ async function getWorksData(year, location) {
     return null;
   }
 
-  // Fetch all works in this group
+  // Fetch all works in this group - include image dimensions
   const worksQuery = `
   *[_type == "workOnPaper" && references($groupId)] | order(number asc) {
     _id,
@@ -58,6 +56,8 @@ async function getWorksData(year, location) {
     medium,
     "imageUrl": image.asset->url,
     "lqip": image.asset->metadata.lqip,
+    "width": image.asset->metadata.dimensions.width,
+    "height": image.asset->metadata.dimensions.height,
     alt
   }
 `;
@@ -75,63 +75,13 @@ export default async function WorksGridPage({ params }) {
     return (
       <div className={styles.container}>
         <h1>Portfolio Not Found</h1>
-        <Link href="/">Return Home</Link>
       </div>
     );
   }
 
   const { group, works } = data;
-  const decodedLocation = decodeURIComponent(location);
 
-  return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>
-          {group.year} — {decodedLocation}
-        </h1>
-
-        {group.groupDescription && group.groupDescription.length > 0 && (
-          <div className={styles.description}>
-            <PortableText value={group.groupDescription} />
-          </div>
-        )}
-
-        <p className={styles.workCount}>
-          {works.length} {works.length === 1 ? "work" : "works"}
-        </p>
-      </header>
-
-      <div className={styles.grid}>
-        {works.map((work) => (
-          <Link
-            key={work._id}
-            href={`/works-on-paper/${year}/${location}/${work.slug}`}
-            className={styles.gridItem}
-          >
-            <div className={styles.imageWrapper}>
-              <Image
-                src={work.imageUrl}
-                alt={work.alt || work.title}
-                width={600}
-                height={800}
-                className={styles.image}
-                placeholder={work.lqip ? "blur" : "empty"}
-                blurDataURL={work.lqip}
-              />
-            </div>
-
-            <div className={styles.itemInfo}>
-              <h3 className={styles.itemTitle}>{work.title}</h3>
-              {work.dimensions && (
-                <p className={styles.itemMeta}>{work.dimensions}</p>
-              )}
-              {work.medium && <p className={styles.itemMeta}>{work.medium}</p>}
-            </div>
-          </Link>
-        ))}
-      </div>
-    </div>
-  );
+  return <WorksGridClient group={group} works={works} year={year} location={location} />;
 }
 
 // Generate metadata for SEO

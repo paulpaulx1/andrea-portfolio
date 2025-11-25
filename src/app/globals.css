@@ -42,7 +42,6 @@ body {
   flex: 1;
   padding: 80px 60px;
   background: #fff;
-  max-width: 900px;
 }
 
 /* === Typography === */
@@ -111,7 +110,8 @@ body {
 .main {
   flex: 1;
   padding: 2rem;
-  overflow-x: hidden; /* Prevent horizontal scroll */
+  overflow-x: hidden;
+  /* Prevent horizontal scroll */
   background: #fff;
 }
 
@@ -146,29 +146,30 @@ body {
   .layout {
     flex-direction: column;
   }
-  
+
   .desktop-only {
     display: none;
   }
-  
+
   .mobile-only {
     display: block;
   }
-  
+
   .main {
     width: 100%;
     padding: 1rem;
   }
-  
+
   .mobile-header {
     display: block;
     padding: 1rem;
     border-bottom: 1px solid #eee;
   }
-  
+
   .mobile-header .site-title {
     margin-bottom: 0.5rem;
-    padding-right: 50px; /* Make room for hamburger icon */
+    padding-right: 50px;
+    /* Make room for hamburger icon */
   }
 }
 
@@ -176,7 +177,7 @@ body {
   .desktop-only {
     display: block;
   }
-  
+
   .mobile-only {
     display: none;
   }

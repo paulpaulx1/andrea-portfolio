@@ -45,8 +45,10 @@ export default function FilmPageClient({ film }) {
         <ImageCarousel images={images} openLightbox={openLightbox} />
       )}
       <h1 className="text-3xl font-bold mb-2">{film.title}</h1>
-      {film.year && `${film.year}`}
-      {film.duration && ` • ${film.duration}`}
+      <div className="text-3xl font-bold mb-2">
+        {film.year && `${film.year}`}
+        {film.duration && ` • ${film.duration}`}
+      </div>
 
       {/* Video player for either Archive.org or YouTube */}
       {hasVideo && (
