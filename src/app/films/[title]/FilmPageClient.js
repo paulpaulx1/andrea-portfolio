@@ -1,5 +1,5 @@
 // app/films/[title]/FilmPageClient.jsx
-'use client';
+"use client";
 import { useState } from "react";
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
@@ -14,9 +14,10 @@ export default function FilmPageClient({ film }) {
 
   // Use enhanced images if available, otherwise fall back to legacy images
   // Enhanced images have { image, alt, caption } structure, so extract just the image
-  const images = film.enhancedImages?.length > 0
-    ? film.enhancedImages.map(item => item.image)
-    : film.images || [];
+  const images =
+    film.enhancedImages?.length > 0
+      ? film.enhancedImages.map((item) => item.image)
+      : film.images || [];
 
   // Function to open the lightbox
   const openLightbox = (index) => {
@@ -35,11 +36,7 @@ export default function FilmPageClient({ film }) {
   return (
     <article className="max-w-3xl mx-auto p-8 space-y-8">
       <header>
-        <h1 className="text-3xl font-bold mb-2">{film.title}</h1>
-        <p className="text-gray-600">
-          {film.year || "Year unknown"}
-          {film.duration && ` • ${film.duration}`}
-        </p>
+        <p className="text-gray-600"></p>
       </header>
 
       {/* Conditional rendering based on video presence */}
@@ -47,6 +44,9 @@ export default function FilmPageClient({ film }) {
       {!hasVideo && images.length > 0 && (
         <ImageCarousel images={images} openLightbox={openLightbox} />
       )}
+      <h1 className="text-3xl font-bold mb-2">{film.title}</h1>
+      {film.year && `${film.year}`}
+      {film.duration && ` • ${film.duration}`}
 
       {/* Video player for either Archive.org or YouTube */}
       {hasVideo && (
