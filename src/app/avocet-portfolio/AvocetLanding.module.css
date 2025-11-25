@@ -1,47 +1,53 @@
-.gridWrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 2.5rem;
-    margin-top: 2rem;
+/* Masonry wrapper */
+.masonry {
+  column-count: 3;
+  column-gap: 2rem;
+  margin-top: 2rem;
 }
 
-/* Thumbnail container */
-.thumb {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    background: #f1f5f9;
-    /* slate-100 */
-    overflow: hidden;
-    border-radius: 2px;
+/* Masonry items */
+.masonryItem {
+  break-inside: avoid;
+  display: block;
+  margin-bottom: 2rem;
+  text-decoration: none;
 }
 
-/* Thumbnail images */
-.thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.25s ease;
+/* Larger images, keep aspect ratio */
+.thumbImg {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  background: #f1f5f9;
+  transition: transform 0.25s ease;
 }
 
-.thumb:hover img {
-    transform: scale(1.06);
+.masonryItem:hover .thumbImg {
+  transform: scale(1.03);
 }
 
-/* Artist names */
+/* Artist name: bigger + bolder */
 .artistName {
-    text-align: center;
-    margin-top: 0.75rem;
-    font-size: 0.95rem;
-    color: #334155;
-    /* slate-700 */
+  text-align: center;
+  margin-top: 0.65rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #334155;
 }
 
 .artistName:hover {
-    text-decoration: underline;
+  text-decoration: underline;
+}
+
+/* Responsive masonry */
+@media (max-width: 1024px) {
+  .masonry {
+    column-count: 2;
+  }
 }
 
 @media (max-width: 640px) {
-    .gridWrapper {
-        gap: 2rem;
-    }
+  .masonry {
+    column-count: 1;
+  }
 }
