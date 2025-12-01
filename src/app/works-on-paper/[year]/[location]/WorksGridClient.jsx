@@ -44,12 +44,6 @@ export default function WorksGridClient({ group, works, year, location }) {
           {group.year} — {decodedLocation}
         </h1>
 
-        {group.groupDescription && group.groupDescription.length > 0 && (
-          <div className={styles.description}>
-            <PortableText value={group.groupDescription} />
-          </div>
-        )}
-
         <p className={styles.workCount}>
           {works.length} {works.length === 1 ? "work" : "works"}
         </p>
@@ -86,6 +80,12 @@ export default function WorksGridClient({ group, works, year, location }) {
           </div>
         ))}
       </div>
+
+      {group.groupDescription && group.groupDescription.length > 0 && (
+        <div className={styles.description}>
+          <PortableText value={group.groupDescription} />
+        </div>
+      )}
 
       {/* Lightbox for full-screen images */}
       {lightboxOpen && (
