@@ -37,6 +37,7 @@ export default function EmblaCarousel({ images, autoplayDelay = 5000 }) {
         ref={emblaRef}
         onClick={handleClick}
       >
+        
         <div className={styles.embla__container}>
           {images.map((img, i) => (
             <div key={img._key || i} className={styles.embla__slide}>
