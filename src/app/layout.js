@@ -1,38 +1,43 @@
+// app/layout.tsx (SERVER)
 import Link from "next/link";
-import MobileNav from "@components/MobileNav";
 import SideNav from "@components/SideNav";
-import { NavigationProvider } from "../app/context/NavigationProvider";
+import MobileNav from "@components/MobileNav";
 import "./globals.css";
+import { headers } from "next/headers";
 
 export default function RootLayout({ children }) {
+  const pathname = headers().get("x-pathname") || "/";
+
   return (
     <html lang="en">
       <body>
-        <NavigationProvider>
-          <div className="layout">
-            <aside className="sidebar desktop-only">
-              <h1 className="site-title">
-                <Link href="/" className="site-title-link">
-                  andrea callard
-                </Link>
-              </h1>
-              <SideNav />
-            </aside>
+        <div className="layout">
+          {/* DESKTOP */}
+          <aside className="sidebar desktop-only">
+            <h1 className="site-title">
+              <Link href="/" className="site-title-link">
+                andrea callard
+              </Link>
+            </h1>
 
-            <div className="mobile-header mobile-only">
-              <h1 className="site-title">
-                <Link href="/" className="site-title-link">
-                  andrea callard
-                </Link>
-              </h1>
-              <MobileNav>
-                <SideNav />
-              </MobileNav>
-            </div>
+            <SideNav pathname={pathname} />
+          </aside>
 
-            <main className="main">{children}</main>
+          {/* MOBILE */}
+          <div className="mobile-header mobile-only">
+            <h1 className="site-title">
+              <Link href="/" className="site-title-link">
+                andrea callard
+              </Link>
+            </h1>
+
+            <MobileNav>
+              <SideNav pathname={pathname} />
+            </MobileNav>
           </div>
-        </NavigationProvider>
+
+          <main className="main">{children}</main>
+        </div>
       </body>
     </html>
   );
