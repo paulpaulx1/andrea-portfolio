@@ -1,4 +1,3 @@
-// components/SideNavClient.tsx
 "use client";
 
 import Link from "next/link";
@@ -20,7 +19,7 @@ export default function SideNavClient({
     avocet: false,
   });
 
-  // ✅ Auto-expand based on route
+  // ✅ Auto-open based on current route
   useEffect(() => {
     setOpen({
       films: pathname.startsWith("/films"),
@@ -35,6 +34,11 @@ export default function SideNavClient({
       [section]: !prev[section],
     }));
   }
+
+  // Normalise worksGroups into a flat array
+  const worksArray = Array.isArray(worksGroups)
+    ? worksGroups
+    : Object.values(worksGroups || {}).flat();
 
   return (
     <nav className={styles.nav}>
@@ -66,7 +70,7 @@ export default function SideNavClient({
         )}
       </div>
 
-      {/* WORKS */}
+      {/* ✅ WORKS ON PAPER — FLAT, DEFENSIVE */}
       <div className={styles.section}>
         <button className={styles.topButton} onClick={() => toggle("works")}>
           Works on Paper
@@ -74,27 +78,60 @@ export default function SideNavClient({
 
         {open.works && (
           <div className={styles.list}>
-            {Object.keys(worksGroups)
-              .sort((a, b) => Number(b) - Number(a))
-              .map((year) => (
-                <div key={year}>
-                  <div className={styles.itemButton}>{year}</div>
+            {worksArray.length === 0 && (
+              <div className={styles.placeholder}>No works yet</div>
+            )}
 
-                  <div className={styles.nestedList}>
-                    {worksGroups[year].map((loc) => (
-                      <Link
-                        key={loc._id}
-                        href={`/works-on-paper/${year}/${encodeURIComponent(
-                          loc.location
-                        )}`}
-                        className={`${styles.itemButton} ${styles.nested}`}
-                      >
-                        {loc.location} ({loc.workCount})
-                      </Link>
-                    ))}
+            {worksArray.map((group) => {
+              // Try multiple shapes just in case
+              const rawYear =
+                group.year ?? group.groupYear ?? group.group?.year ?? null;
+
+              const hasYear =
+                typeof rawYear === "number" ||
+                (typeof rawYear === "string" && rawYear.trim() !== "");
+              const hasLocation = !!group.location;
+
+              const year = hasYear ? rawYear : null;
+
+              // Build a nice label
+              const parts = [];
+              if (group.title) parts.push(group.title);
+              if (group.location) parts.push(group.location);
+              if (year) parts.push(year);
+              const label = parts.join(", ") || "Untitled group";
+              const count = group.workCount ?? 0;
+
+              // If we somehow still don't have both year + location, don't make a broken link
+              if (!hasYear || !hasLocation) {
+                return (
+                  <div
+                    key={group._id}
+                    className={`${styles.itemButton} ${styles.disabled || ""}`}
+                    title="This group is missing a year or location"
+                  >
+                    {label} ({count})
                   </div>
-                </div>
-              ))}
+                );
+              }
+
+              const href = `/works-on-paper/${year}/${encodeURIComponent(
+                group.location
+              )}`;
+              const isActive = pathname === href;
+
+              return (
+                <Link
+                  key={group._id}
+                  href={href}
+                  className={`${styles.itemButton} ${
+                    isActive ? styles.active : ""
+                  }`}
+                >
+                  {label} ({count})
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>

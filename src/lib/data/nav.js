@@ -21,46 +21,17 @@ export const getNavFilms = cache(async () => {
 
 export const getNavWorksGroups = cache(async () => {
   const query = `
-    *[_type == "worksOnPaperGroup"] | order(year desc, location asc) {
+    *[_type == "worksOnPaperGroup"]
+    | order(year desc, location asc) {
       _id,
+      title,
       year,
       location,
-      "workCount": count(
-        *[_type == "workOnPaper" && references(^._id)]
-      )
+      // count all works in this group
+      "workCount": count(*[_type == "workOnPaper" && references(^._id)])
     }
   `;
-
-  const groups = await sanityClient.fetch(
-    query,
-    {},
-    {
-      next: {
-        revalidate: 60 * 60, // 1 hour
-        tags: ["nav", "nav-works"],
-      },
-    }
-  );
-
-  // ✅ Reshape into:
-  // { [year]: [{ _id, location, workCount }] }
-  const byYear = {};
-
-  for (const group of groups) {
-    const yearKey = String(group.year);
-
-    if (!byYear[yearKey]) {
-      byYear[yearKey] = [];
-    }
-
-    byYear[yearKey].push({
-      _id: group._id,
-      location: group.location,
-      workCount: group.workCount,
-    });
-  }
-
-  return byYear;
+  return sanityClient.fetch(query);
 });
 
 export const getNavAvocetArtists = cache(async () => {

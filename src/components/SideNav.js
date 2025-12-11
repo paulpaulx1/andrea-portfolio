@@ -1,4 +1,4 @@
-// components/SideNav.tsx (SERVER)
+// components/SideNav.jsx (SERVER)
 import {
   getNavFilms,
   getNavWorksGroups,
@@ -16,9 +16,9 @@ export default async function SideNav({ pathname }) {
   return (
     <SideNavClient
       pathname={pathname}
-      films={films}
-      worksGroups={worksGroups}
-      avocetArtists={avocetArtists}
+      films={films || []}
+      worksGroups={worksGroups || []}
+      avocetArtists={avocetArtists || []}
     />
   );
 }
