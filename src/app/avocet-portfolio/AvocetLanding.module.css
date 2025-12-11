@@ -1,53 +1,144 @@
-/* Masonry wrapper */
-.masonry {
-  column-count: 3;
-  column-gap: 2rem;
+/* Grid wrapper */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
   margin-top: 2rem;
 }
 
-/* Masonry items */
-.masonryItem {
-  break-inside: avoid;
-  display: block;
-  margin-bottom: 2rem;
+/* Each card */
+.gridItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-decoration: none;
 }
 
-/* Larger images, keep aspect ratio */
-.thumbImg {
+/* Fixed-height image box so rows line up */
+.thumbWrapper {
   width: 100%;
-  height: auto;
+  max-width: 340px;
+  /* keeps everything visually tidy */
+  height: 320px;
+  /* fixed height so all rows align */
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 4px;
-  background: #f1f5f9;
+  overflow: hidden;
+}
+
+/* Image centered inside wrapper, keep aspect ratio */
+.thumbImg {
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
   transition: transform 0.25s ease;
 }
 
-.masonryItem:hover .thumbImg {
+.gridItem:hover .thumbImg {
   transform: scale(1.03);
 }
 
-/* Artist name: bigger + bolder */
+/* Artist name: same baseline across row */
 .artistName {
   text-align: center;
-  margin-top: 0.65rem;
-  font-size: 1.1rem;
+  margin-top: 0.75rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: #334155;
+  min-height: 2.4rem;
+  /* keeps text blocks even-ish across cards */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .artistName:hover {
   text-decoration: underline;
 }
 
-/* Responsive masonry */
+/* Responsive: 2 columns on tablet, 1 on mobile */
 @media (max-width: 1024px) {
-  .masonry {
-    column-count: 2;
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 640px) {
-  .masonry {
-    column-count: 1;
+  .grid {
+    grid-template-columns: 1fr;
   }
+
+  .thumbWrapper {
+    max-width: 320px;
+    height: 260px;
+  }
+}
+
+/* Pagination wrapper: a bit of vertical breathing room */
+.paginationWrapper {
+  margin: 2.5rem 0 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* "Page X of Y" line */
+.paginationMeta {
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.paginationMeta span {
+  color: #334155;
+}
+
+/* Controls row */
+.paginationControls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+/* Base link style – minimal, text only */
+.pageNumber,
+.paginationPrev,
+.paginationNext {
+  font-size: 0.9rem;
+  padding: 0;
+  /* no pill padding */
+  border: none;
+  /* no outlines */
+  border-radius: 0;
+  background: transparent;
+  color: #475569;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+/* Hover: subtle underline + darker text */
+.pageNumber:hover,
+.paginationPrev:hover,
+.paginationNext:hover {
+  color: #0f172a;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Active page: slightly bolder + always underlined */
+.pageNumberActive {
+  font-weight: 600;
+  color: #0f172a;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

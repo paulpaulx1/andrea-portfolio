@@ -26,9 +26,7 @@ export default async function AvocetLandingPage({ searchParams }) {
     `
   );
 
-  const total = await sanityClient.fetch(
-    `count(*[_type == "avocetArtist"])`
-  );
+  const total = await sanityClient.fetch(`count(*[_type == "avocetArtist"])`);
 
   const totalPages = Math.ceil(total / perPage);
 
@@ -39,22 +37,24 @@ export default async function AvocetLandingPage({ searchParams }) {
         Avocet Portfolio
       </h1>
 
-      {/* Masonry Grid */}
-      <div className={styles.masonry}>
+      {/* Grid */}
+      <div className={styles.grid}>
         {artists.map((artist) => (
           <Link
             key={artist._id}
             href={`/avocet-portfolio/${artist.slug}`}
-            className={styles.masonryItem}
+            className={styles.gridItem}
           >
-            <img
-              src={artist.thumbnailUrl}
-              alt={
-                artist.thumbnailAlt ||
-                `${artist.firstName} ${artist.lastName}`
-              }
-              className={styles.thumbImg}
-            />
+            <div className={styles.thumbWrapper}>
+              <img
+                src={artist.thumbnailUrl}
+                alt={
+                  artist.thumbnailAlt ||
+                  `${artist.firstName} ${artist.lastName}`
+                }
+                className={styles.thumbImg}
+              />
+            </div>
 
             <div className={styles.artistName}>
               {artist.firstName} {artist.lastName}
@@ -63,46 +63,76 @@ export default async function AvocetLandingPage({ searchParams }) {
         ))}
       </div>
 
-      {/* Divider */}
-      <hr className="my-16 border-slate-300" />
+      <div className={styles.paginationWrapper}>
+        <div className={styles.paginationControls}>
+          {page > 1 && (
+            <Link href={`?page=${page - 1}`} className={styles.paginationPrev}>
+              ← Previous
+            </Link>
+          )}
 
-      {/* TEXT SECTION — unchanged */}
-      <div className="prose prose-slate max-w-none">
-        <p>
-          The Avocet Portfolio was most recently exhibited June 17–July 30, 2023
-          at the Kentler International Drawing Space in Redhook, Brooklyn...
-        </p>
+          {Array.from({ length: totalPages }).map((_, i) => {
+            const num = i + 1;
+            const active = num === page;
+            return (
+              <Link
+                key={num}
+                href={`?page=${num}`}
+                className={`${styles.pageNumber} ${
+                  active ? styles.pageNumberActive : ""
+                }`}
+              >
+                {num}
+              </Link>
+            );
+          })}
 
+          {page < totalPages && (
+            <Link href={`?page=${page + 1}`} className={styles.paginationNext}>
+              Next →
+            </Link>
+          )}
+        </div>
       </div>
+      <section className="my-10">
+        <div className="max-w-[820px] mx-auto px-4">
+          <div className="space-y-6 my-2">
+            <p>
+              The Avocet Portfolio was most recently exhibited June 17–July 30,
+              2023 at the Kentler International Drawing Space in Red Hook,
+              Brooklyn. The project brings together artists from Art Awareness
+              in a collaborative printmaking portfolio created between
+              1985–1991.
+            </p>
+
+            <p>
+              Each artist contributed a print that reflects their own visual
+              language while remaining in dialogue with the others in the
+              portfolio. The works span a range of approaches and techniques,
+              but share an attention to place, memory, and the lived
+              environment.
+            </p>
+
+            <p>
+              This online presentation preserves the structure of the original
+              portfolio while making it accessible for research, teaching, and
+              general viewing alongside Andrea Callard&apos;s broader body of
+              work.
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* Pagination */}
-      <div className="flex items-center justify-center gap-3 mt-16">
-        {Array.from({ length: totalPages }).map((_, i) => {
-          const num = i + 1;
-          const active = num === page;
-          return (
-            <Link
-              key={num}
-              href={`?page=${num}`}
-              className={`px-3 py-1 border rounded ${
-                active
-                  ? "bg-slate-700 text-white border-slate-700"
-                  : "border-slate-400 text-slate-600 hover:bg-slate-100"
-              }`}
-            >
-              {num}
-            </Link>
-          );
-        })}
+      <div className="mt-16 flex flex-col items-center gap-4">
+        {/* Breadcrumb-style summary */}
+        {/* <div className="text-xs uppercase tracking-[0.18em] text-slate-500">
+          Page <span className="text-slate-800">{page}</span> of{" "}
+          <span className="text-slate-800">{totalPages}</span>
+        </div> */}
 
-        {page < totalPages && (
-          <Link
-            href={`?page=${page + 1}`}
-            className="px-3 py-1 border border-slate-400 text-slate-600 rounded hover:bg-slate-100"
-          >
-            Next →
-          </Link>
-        )}
+        {/* Pager controls */}
+        {/* Pagination */}
       </div>
     </div>
   );
