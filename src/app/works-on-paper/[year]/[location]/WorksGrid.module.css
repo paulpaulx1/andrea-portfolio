@@ -90,3 +90,36 @@
   color: #666;
   margin: 0.25rem 0;
 }
+
+
+
+/* make sure wrapper is positioning context */
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1rem;
+  background: #f5f5f5;
+  overflow: hidden;
+}
+
+.titleRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.itemTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: #444;
+}
+
+.serialInline {
+  font-size: 1.1rem;
+  /* same as title */
+  font-weight: 600;
+  color: #666;
+  letter-spacing: 0.05em;
+}

@@ -28,13 +28,18 @@ async function getWorksData(year, location) {
 
   // Find the group
   const groupQuery = `
-    *[_type == "worksOnPaperGroup" && year == $year && location == $location][0] {
-      _id,
-      year,
-      location,
-      groupDescription
+  *[_type == "worksOnPaperGroup" && year == $year && location == $location][0] {
+    _id,
+    year,
+    location,
+    groupDescription,
+    serialization{
+      enabled,
+      mode,
+      scope
     }
-  `;
+  }
+`;
 
   const group = await sanityClient.fetch(groupQuery, {
     year: yearNum,
@@ -81,7 +86,14 @@ export default async function WorksGridPage({ params }) {
 
   const { group, works } = data;
 
-  return <WorksGridClient group={group} works={works} year={year} location={location} />;
+  return (
+    <WorksGridClient
+      group={group}
+      works={works}
+      year={year}
+      location={location}
+    />
+  );
 }
 
 // Generate metadata for SEO
