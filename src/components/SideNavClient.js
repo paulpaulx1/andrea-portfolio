@@ -175,4 +175,4 @@ export default function SideNavClient({
       </div>
     </nav>
   );
-}
+} 
