@@ -44,7 +44,9 @@ export default function FilmPageClient({ film }) {
       {!hasVideo && images.length > 0 && (
         <ImageCarousel images={images} openLightbox={openLightbox} />
       )}
-      <h1 className="text-3xl font-bold mb-2">{film.title}</h1>
+      <h1 className="pageHeader" style={{ textAlign: "center" }}>
+        {film.title}
+      </h1>
       <div className="text-3xl font-bold mb-2">
         {film.year && `${film.year}`}
         {film.duration && ` • ${film.duration}`}

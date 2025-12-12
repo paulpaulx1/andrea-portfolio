@@ -83,7 +83,6 @@ export default function SideNavClient({
             )}
 
             {worksArray.map((group) => {
-              // Try multiple shapes just in case
               const rawYear =
                 group.year ?? group.groupYear ?? group.group?.year ?? null;
 
@@ -94,7 +93,6 @@ export default function SideNavClient({
 
               const year = hasYear ? rawYear : null;
 
-              // Build a nice label
               const parts = [];
               if (group.title) parts.push(group.title);
               if (group.location) parts.push(group.location);
@@ -102,7 +100,6 @@ export default function SideNavClient({
               const label = parts.join(", ") || "Untitled group";
               const count = group.workCount ?? 0;
 
-              // If we somehow still don't have both year + location, don't make a broken link
               if (!hasYear || !hasLocation) {
                 return (
                   <div
@@ -141,8 +138,13 @@ export default function SideNavClient({
         <button
           className={styles.topButton}
           onClick={() => {
-            router.push("/avocet-portfolio");
-            toggle("avocet");
+            const isOnAvocet = pathname.startsWith("/avocet-portfolio");
+
+            if (!isOnAvocet) {
+              router.push("/avocet-portfolio");
+              setOpen((prev) => ({ ...prev, avocet: true }));
+            }
+            // If already on /avocet-portfolio, do nothing (keep it open)
           }}
         >
           Avocet Portfolio

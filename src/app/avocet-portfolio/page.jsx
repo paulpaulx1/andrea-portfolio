@@ -33,10 +33,7 @@ export default async function AvocetLandingPage({ searchParams }) {
   return (
     <div className="max-w-5xl mx-auto px-4 pb-24">
       {/* Page Title */}
-      <h1 className="text-center text-3xl tracking-wide uppercase mt-8 mb-10 text-slate-700">
-        Avocet Portfolio
-      </h1>
-
+      <h1 className="pageHeader text-center" style={{textAlign: "center"}}>Avocet Portfolio</h1>
       {/* Grid */}
       <div className={styles.grid}>
         {artists.map((artist) => (

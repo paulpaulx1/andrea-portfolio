@@ -182,3 +182,11 @@ body {
     display: none;
   }
 }
+
+.pageHeader {
+  font-size: 36px;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
