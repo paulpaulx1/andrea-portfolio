@@ -1,64 +1,27 @@
-/* app/avocet-portfolio/[slug]/AvocetArtist.module.css */
-
 .container {
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 1rem 2rem;
+    padding: 2rem;
 }
 
-/* Artist Name */
-.artistName {
-    text-align: center;
-    font-size: 2rem;
-    font-weight: 300;
-    letter-spacing: 0.05em;
-    margin-bottom: 3rem;
-    text-transform: uppercase;
-    color: rgba(0, 0, 0, 0.8);
-}
-
-/* Hero Section: Image left, Info right */
+/* HERO */
 .heroSection {
     display: grid;
-    grid-template-columns: 1fr 300px;
+    grid-template-columns: 1fr 320px;
     gap: 4rem;
-    margin-bottom: 4rem;
-    align-items: start;
+    margin-bottom: 5rem;
 }
 
 @media (max-width: 1024px) {
     .heroSection {
         grid-template-columns: 1fr;
-        gap: 2rem;
     }
 }
 
-.heroImage {
-    width: 100%;
-    max-width: 900px;
-}
-
-.heroInfo {
-    padding: 1rem 0;
-}
-
-.artworkTitle {
-    font-size: 1.5rem;
-    font-weight: 400;
-    margin-bottom: 1rem;
-    font-style: italic;
-}
-
-.infoItem {
-    margin: 0.5rem 0;
-    line-height: 1.6;
-    color: rgba(0, 0, 0, 0.8);
-}
-
-/* Masonry Grid */
+/* GRID */
 .grid {
     column-count: 2;
     column-gap: 3rem;
-    margin-bottom: 4rem;
 }
 
 @media (max-width: 768px) {
@@ -68,113 +31,79 @@
 }
 
 .gridItem {
-    display: inline-block;
-    width: 100%;
-    margin-bottom: 3rem;
     break-inside: avoid;
+    margin-bottom: 4rem;
 }
 
-.gridImage {
-    width: 100%;
-    margin-bottom: 1rem;
-}
-
+/* IMAGE */
 .image {
     width: 100%;
     height: auto;
     display: block;
 }
 
-.gridInfo {
-    padding: 0 0.5rem;
+/* METADATA BLOCK (shared) */
+.metaBlock {
+    margin-top: 1rem;
+    max-width: 320px;
 }
 
-.gridTitle {
-    font-size: 1.1rem;
-    font-weight: 400;
-    margin-bottom: 0.5rem;
+/* TITLES */
+.title {
+    font-size: 1.6rem;
+    font-weight: 500;
     font-style: italic;
-    margin-top: 10px;
+    margin-bottom: 1.25rem;
 }
 
-.gridMeta {
-    margin: 0.25rem 0;
+.titleSmall {
+    font-size: 1.15rem;
+    font-weight: 500;
+    font-style: italic;
+    margin-bottom: 0.85rem;
+}
+
+/* PRIMARY META */
+.primaryMeta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+/* SECONDARY META */
+.secondaryMeta {
+    margin-top: 0.6rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
     font-size: 0.95rem;
-    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.65);
+}
+
+/* DESCRIPTION */
+.description {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
     color: rgba(0, 0, 0, 0.7);
 }
 
-/* Artist Statement Section */
-.statementSection {
-    margin-top: 5rem;
-    padding-top: 3rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+.description p {
+    margin-bottom: 1.25rem;
 }
 
-.statement {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.statement p {
-    margin-bottom: 1.5rem;
-    line-height: 1.7;
-    color: rgba(0, 0, 0, 0.8);
-}
-
-.statement p:last-child {
+.description p:last-child {
     margin-bottom: 0;
 }
 
-.statement em {
-    font-style: italic;
-}
-
-.statement strong {
-    font-weight: 600;
-}
-
-/* Back Link */
-.backLink {
-    margin-top: 3rem;
-    text-align: center;
-}
-
-.backLink a {
-    color: rgba(0, 0, 0, 0.6);
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.backLink a:hover {
-    color: rgba(0, 0, 0, 0.9);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .container {
-        padding: 2rem 1.5rem;
-    }
-
-    .artistName {
-        font-size: 1.5rem;
-        margin-bottom: 2rem;
-    }
-
-    .heroSection {
-        margin-bottom: 3rem;
-    }
-
-    .artworkTitle {
-        font-size: 1.25rem;
-    }
-
-    .grid {
-        margin-bottom: 3rem;
-    }
-
-    .statementSection {
-        margin-top: 3rem;
-        padding-top: 2rem;
-    }
+/* STATEMENT */
+.statement {
+    max-width: 800px;
+    margin: 6rem auto 0;
+    line-height: 1.7;
 }
