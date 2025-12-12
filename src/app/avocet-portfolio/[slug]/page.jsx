@@ -14,9 +14,9 @@ export async function generateStaticParams() {
       "slug": slug.current
     }
   `;
-  
+
   const artists = await sanityClient.fetch(query);
-  
+
   return artists.map((artist) => ({
     slug: artist.slug,
   }));
@@ -78,7 +78,7 @@ export default async function AvocetArtistPage({ params }) {
   }
 
   const { artist, artworks } = data;
-  
+
   // First artwork is the hero
   const heroArtwork = artworks[0];
   // Remaining artworks go in the grid
@@ -87,14 +87,14 @@ export default async function AvocetArtistPage({ params }) {
   return (
     <div className={styles.container}>
       {/* Artist Name */}
-      <h1 className={styles.artistName}>
+      <h1 className="pageHeader" style={{ textAlign: "center" }}>
         {artist.firstName} {artist.lastName}
       </h1>
 
       {/* Hero Section: Large image on left, info on right */}
       {heroArtwork && (
         <div className={styles.heroSection}>
-          <Link 
+          <Link
             href={`/avocet-portfolio/${slug}/${heroArtwork.slug}`}
             className={styles.heroImage}
           >
@@ -105,34 +105,34 @@ export default async function AvocetArtistPage({ params }) {
               height={1000}
               className={styles.image}
               priority
-              placeholder={heroArtwork.imageBlur ? 'blur' : 'empty'}
+              placeholder={heroArtwork.imageBlur ? "blur" : "empty"}
               blurDataURL={heroArtwork.imageBlur}
             />
           </Link>
 
           <div className={styles.heroInfo}>
             <h2 className={styles.artworkTitle}>{heroArtwork.title}</h2>
-            
+
             {heroArtwork.year && (
               <p className={styles.infoItem}>{heroArtwork.year}</p>
             )}
-            
+
             {heroArtwork.medium && (
               <p className={styles.infoItem}>{heroArtwork.medium}</p>
             )}
-            
+
             {heroArtwork.editionSize && (
               <p className={styles.infoItem}>{heroArtwork.editionSize}</p>
             )}
-            
+
             {heroArtwork.printDetails && (
               <p className={styles.infoItem}>{heroArtwork.printDetails}</p>
             )}
-            
+
             {heroArtwork.dimensions && (
               <p className={styles.infoItem}>{heroArtwork.dimensions}</p>
             )}
-            
+
             {heroArtwork.description && heroArtwork.description.length > 0 && (
               <div className={styles.artworkDescription}>
                 <PortableText value={heroArtwork.description} />
@@ -147,7 +147,7 @@ export default async function AvocetArtistPage({ params }) {
         <div className={styles.grid}>
           {gridArtworks.map((work) => (
             <div key={work._id} className={styles.gridItem}>
-              <Link 
+              <Link
                 href={`/avocet-portfolio/${slug}/${work.slug}`}
                 className={styles.gridImageLink}
               >
@@ -157,34 +157,32 @@ export default async function AvocetArtistPage({ params }) {
                   width={600}
                   height={800}
                   className={styles.image}
-                  placeholder={work.imageBlur ? 'blur' : 'empty'}
+                  placeholder={work.imageBlur ? "blur" : "empty"}
                   blurDataURL={work.imageBlur}
                 />
               </Link>
 
               <div className={styles.gridInfo}>
                 <h3 className={styles.gridTitle}>{work.title}</h3>
-                
-                {work.year && (
-                  <p className={styles.gridMeta}>{work.year}</p>
-                )}
-                
+
+                {work.year && <p className={styles.gridMeta}>{work.year}</p>}
+
                 {work.medium && (
                   <p className={styles.gridMeta}>{work.medium}</p>
                 )}
-                
+
                 {work.editionSize && (
                   <p className={styles.gridMeta}>{work.editionSize}</p>
                 )}
-                
+
                 {work.printDetails && (
                   <p className={styles.gridMeta}>{work.printDetails}</p>
                 )}
-                
+
                 {work.dimensions && (
                   <p className={styles.gridMeta}>{work.dimensions}</p>
                 )}
-                
+
                 {work.description && work.description.length > 0 && (
                   <div className={styles.gridDescription}>
                     <PortableText value={work.description} />
@@ -217,15 +215,15 @@ export default async function AvocetArtistPage({ params }) {
 export async function generateMetadata({ params }) {
   const { slug } = params;
   const data = await getArtistData(slug);
-  
+
   if (!data) {
     return {
-      title: 'Artist Not Found',
+      title: "Artist Not Found",
     };
   }
 
   const { artist } = data;
-  
+
   return {
     title: `${artist.firstName} ${artist.lastName} | Avocet Portfolio`,
     description: `View works by ${artist.firstName} ${artist.lastName} from the Avocet Portfolio`,
