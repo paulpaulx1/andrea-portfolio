@@ -62,7 +62,7 @@ export default function FilmPageClient({ film }) {
 
       {/* Film description - only using rich text now */}
       {film.descriptionRich && film.descriptionRich.length > 0 && (
-        <div className="text-slate-800">
+        <div className={styles.filmDescription} >
           <PortableText value={film.descriptionRich} />
         </div>
       )}
