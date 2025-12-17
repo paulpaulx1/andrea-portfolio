@@ -1,6 +1,5 @@
-// app/works-on-paper/[year]/[location]/WorksGridClient.jsx
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 import Lightbox from "@components/Lightbox";
@@ -12,96 +11,51 @@ export default function WorksGridClient({ group, works, year, location }) {
 
   const decodedLocation = decodeURIComponent(location);
 
-  function normalizeTitle(t) {
-    const s = (t || "").trim();
-    if (!s) return "untitled";
-    const lower = s.toLowerCase();
-    if (lower === "untitled") return "untitled";
-    return lower;
-  }
+  // Check if serialization is enabled
+  const isSerialized = group?.serialization?.enabled === true;
 
-  function toAlpha(n) {
-    // 1 -> a, 2 -> b, ... 26 -> z, 27 -> aa ...
-    let x = n;
-    let out = "";
-    while (x > 0) {
-      x--;
-      out = String.fromCharCode(97 + (x % 26)) + out;
-      x = Math.floor(x / 26);
-    }
-    return out;
-  }
+  // Build serial labels if enabled
+  const serialMap = useMemo(() => {
+    if (!isSerialized) return new Map();
 
-  function buildSerialMap(works, serialization) {
-    const enabled = serialization?.enabled;
-    if (!enabled) return new Map();
+    const map = new Map();
+    const mode = group.serialization.mode || "alpha"; // "alpha" or "numeric"
 
-    const mode = serialization?.mode || "alpha"; // "alpha" | "numeric"
-    const scope = serialization?.scope || "duplicatesOnly"; // "duplicatesOnly" | "all"
-
-    const keys = works.map((w) => normalizeTitle(w.title));
-
-    const counts = new Map();
-    keys.forEach((k) => counts.set(k, (counts.get(k) || 0) + 1));
-
-    const shouldLabelIndex = (i) => {
-      if (scope === "all") return true;
-      const key = keys[i];
-      return (counts.get(key) || 0) > 1;
-    };
-
-    const perKeyCounter = new Map();
-    let globalCounter = 0;
-
-    const map = new Map(); // work._id -> label
-
-    works.forEach((w, i) => {
-      if (!shouldLabelIndex(i)) return;
-
-      if (scope === "all") {
-        globalCounter += 1;
-        map.set(
-          w._id,
-          mode === "numeric" ? String(globalCounter) : toAlpha(globalCounter)
-        );
-        return;
-      }
-
-      const key = keys[i];
-      const next = (perKeyCounter.get(key) || 0) + 1;
-      perKeyCounter.set(key, next);
-
-      map.set(w._id, mode === "numeric" ? String(next) : toAlpha(next));
+    works.forEach((work, i) => {
+      const label =
+        mode === "numeric" ? String(i + 1) : String.fromCharCode(97 + i); // a, b, c...
+      map.set(work._id, label);
     });
 
     return map;
-  }
+  }, [works, isSerialized, group?.serialization]);
 
-  // Format images for the Lightbox component
-  const images = works.map((work) => ({
-    asset: {
-      url: work.imageUrl,
-      metadata: {
-        lqip: work.lqip,
-        dimensions: {
-          width: work.width || 1200,
-          height: work.height || 1600,
+  // Format images for lightbox
+  const images = useMemo(
+    () =>
+      works.map((work) => ({
+        asset: {
+          url: work.imageUrl,
+          metadata: {
+            lqip: work.lqip,
+            dimensions: {
+              width: work.width || 1200,
+              height: work.height || 1600,
+            },
+          },
         },
-      },
-    },
-  }));
+      })),
+    [works]
+  );
 
-  // Function to open the lightbox
   const openLightbox = (index) => {
     setLightboxIndex(index);
     setLightboxOpen(true);
   };
 
-  // Function to close the lightbox
   const closeLightbox = () => {
     setLightboxOpen(false);
   };
-  const serialMap = buildSerialMap(works, group?.serialization);
 
   return (
     <div className={styles.container}>
@@ -109,23 +63,21 @@ export default function WorksGridClient({ group, works, year, location }) {
         <h1 className="pageHeader">
           {decodedLocation} - {group.year}
         </h1>
-
         <p className={styles.workCount}>
           {works.length} {works.length === 1 ? "work" : "works"}
         </p>
       </header>
 
       <div className={styles.masonry}>
-        {works.map((work, index) => {
-          const serial = serialMap.get(work._id); // "a" | "1" | undefined
-          const displayTitle = serial
-            ? `${work.title || "Untitled"} ${serial}`
-            : work.title || "Untitled";
+        {works.map((work, i) => {
+          const serial = serialMap.get(work._id);
+          const isFirstInSeries = isSerialized && i === 0;
+          const showTitle = !isSerialized || isFirstInSeries;
 
           return (
             <div
               key={work._id}
-              onClick={() => openLightbox(index)}
+              onClick={() => openLightbox(i)}
               className={styles.masonryItem}
               style={{ cursor: "pointer" }}
             >
@@ -144,10 +96,11 @@ export default function WorksGridClient({ group, works, year, location }) {
 
               <div className={styles.itemInfo}>
                 <div className={styles.titleRow}>
-                  <h3 className={styles.itemTitle}>
-                    {work.title || "Untitled"}
-                  </h3>
-
+                  {showTitle && (
+                    <h3 className={styles.itemTitle}>
+                      {work.title || "Untitled"}
+                    </h3>
+                  )}
                   {serial && (
                     <span className={styles.serialInline}>{serial}</span>
                   )}
@@ -171,7 +124,6 @@ export default function WorksGridClient({ group, works, year, location }) {
         </div>
       )}
 
-      {/* Lightbox for full-screen images */}
       {lightboxOpen && (
         <Lightbox
           images={images}

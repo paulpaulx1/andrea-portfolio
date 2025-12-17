@@ -79,34 +79,17 @@
   padding: 0 0.5rem;
 }
 
-.itemTitle {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.itemMeta {
-  font-size: 0.9rem;
-  color: #666;
-  margin: 0.25rem 0;
-}
-
-
-
-/* make sure wrapper is positioning context */
-.imageWrapper {
-  position: relative;
-  width: 100%;
-  margin-bottom: 1rem;
-  background: #f5f5f5;
-  overflow: hidden;
-}
-
+/* ✅ Flexbox layout for title + serial alignment */
 .titleRow {
   display: flex;
-  align-items: baseline;
   justify-content: space-between;
+  align-items: baseline;
+  /* aligns text baselines */
+  width: 100%;
+  margin-bottom: 0.5rem;
+  min-height: 1.3em;
   gap: 1rem;
+  /* spacing between title and serial */
 }
 
 .itemTitle {
@@ -114,12 +97,24 @@
   font-weight: 600;
   margin: 0;
   color: #444;
+  flex: 0 1 auto;
+  /* don't grow, but can shrink */
 }
 
+/* ✅ Serial always pinned to right */
 .serialInline {
   font-size: 1.1rem;
-  /* same as title */
   font-weight: 600;
   color: #666;
   letter-spacing: 0.05em;
+  margin-left: auto;
+  /* pushes to right even when title is absent */
+  flex-shrink: 0;
+  /* never shrink */
+}
+
+.itemMeta {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0.25rem 0;
 }
