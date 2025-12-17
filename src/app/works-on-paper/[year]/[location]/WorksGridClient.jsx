@@ -106,8 +106,8 @@ export default function WorksGridClient({ group, works, year, location }) {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1 className='pageHeader'>
-          {group.year} - {decodedLocation}
+        <h1 className="pageHeader">
+          {decodedLocation} - {group.year}
         </h1>
 
         <p className={styles.workCount}>
