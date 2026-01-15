@@ -33,7 +33,38 @@ export default async function AvocetLandingPage({ searchParams }) {
   return (
     <div className="max-w-5xl mx-auto px-4 pb-24">
       {/* Page Title */}
-      <h1 className="pageHeader text-center" style={{textAlign: "center"}}>Avocet Portfolio</h1>
+      <h1 className="pageHeader text-center" style={{ textAlign: "center" }}>
+        Avocet Portfolio
+      </h1>
+
+      <section className="my-10">
+        <div style={{ maxWidth: "820px", margin: "0 auto", padding: "0 1rem" }}>
+          <div className="space-y-6 my-2">
+            <p>
+              The Avocet Portfolio was most recently exhibited June 17–July 30,
+              2023 at the Kentler International Drawing Space in Red Hook,
+              Brooklyn. The project brings together artists from Art Awareness
+              in a collaborative printmaking portfolio created between
+              1985–1991.
+            </p>
+
+            <p>
+              Each artist contributed a print that reflects their own visual
+              language while remaining in dialogue with the others in the
+              portfolio. The works span a range of approaches and techniques,
+              but share an attention to place, memory, and the lived
+              environment.
+            </p>
+
+            <p>
+              This online presentation preserves the structure of the original
+              portfolio while making it accessible for research, teaching, and
+              general viewing alongside Andrea Callard&apos;s broader body of
+              work.
+            </p>
+          </div>
+        </div>
+      </section>
       {/* Grid */}
       <div className={styles.grid}>
         {artists.map((artist) => (
@@ -91,34 +122,6 @@ export default async function AvocetLandingPage({ searchParams }) {
           )}
         </div>
       </div>
-      <section className="my-10">
-        <div className="max-w-[820px] mx-auto px-4">
-          <div className="space-y-6 my-2">
-            <p>
-              The Avocet Portfolio was most recently exhibited June 17–July 30,
-              2023 at the Kentler International Drawing Space in Red Hook,
-              Brooklyn. The project brings together artists from Art Awareness
-              in a collaborative printmaking portfolio created between
-              1985–1991.
-            </p>
-
-            <p>
-              Each artist contributed a print that reflects their own visual
-              language while remaining in dialogue with the others in the
-              portfolio. The works span a range of approaches and techniques,
-              but share an attention to place, memory, and the lived
-              environment.
-            </p>
-
-            <p>
-              This online presentation preserves the structure of the original
-              portfolio while making it accessible for research, teaching, and
-              general viewing alongside Andrea Callard&apos;s broader body of
-              work.
-            </p>
-          </div>
-        </div>
-      </section>
 
       {/* Pagination */}
       <div className="mt-16 flex flex-col items-center gap-4">

@@ -135,23 +135,15 @@ export default function SideNavClient({
 
       {/* AVOCET */}
       <div className={styles.section}>
-        <button
-          className={styles.topButton}
-          onClick={() => {
-            const isOnAvocet = pathname.startsWith("/avocet-portfolio");
-
-            if (!isOnAvocet) {
-              router.push("/avocet-portfolio");
-              setOpen((prev) => ({ ...prev, avocet: true }));
-            }
-            // If already on /avocet-portfolio, do nothing (keep it open)
-          }}
-        >
+        <button className={styles.topButton} onClick={() => toggle("avocet")}>
           Avocet Portfolio
         </button>
 
         {open.avocet && (
           <div className={styles.list}>
+            <Link href="/avocet-portfolio/about" className={styles.itemButton}>
+              About
+            </Link>
             {avocetArtists.map((artist) => (
               <Link
                 key={artist._id}
@@ -175,4 +167,4 @@ export default function SideNavClient({
       </div>
     </nav>
   );
-} 
+}
