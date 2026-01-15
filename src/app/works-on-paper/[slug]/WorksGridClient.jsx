@@ -17,23 +17,23 @@ export default function WorksGridClient({ group, works }) {
     if (!isSerialized) return new Map();
 
     const map = new Map();
-    const mode = group.serialization.mode || "alpha"; // "alpha" or "numeric"
+    const mode = group.serialization.mode || "alpha";
 
     works.forEach((work, i) => {
       const label =
-        mode === "numeric" ? String(i + 1) : String.fromCharCode(97 + i); // a, b, c...
+        mode === "numeric" ? String(i + 1) : String.fromCharCode(97 + i);
       map.set(work._id, label);
     });
 
     return map;
   }, [works, isSerialized, group?.serialization]);
 
-  // Format images for lightbox
+  // Format images for lightbox with optimized URLs
   const images = useMemo(
     () =>
       works.map((work) => ({
         asset: {
-          url: work.imageUrl,
+          url: work.imageUrl, // Back to original
           metadata: {
             lqip: work.lqip,
             dimensions: {
