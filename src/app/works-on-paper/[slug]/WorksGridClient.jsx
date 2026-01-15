@@ -5,11 +5,9 @@ import { PortableText } from "@portabletext/react";
 import Lightbox from "@components/Lightbox";
 import styles from "./WorksGrid.module.css";
 
-export default function WorksGridClient({ group, works, year, location }) {
+export default function WorksGridClient({ group, works }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-
-  const decodedLocation = decodeURIComponent(location);
 
   // Check if serialization is enabled
   const isSerialized = group?.serialization?.enabled === true;
@@ -61,7 +59,9 @@ export default function WorksGridClient({ group, works, year, location }) {
     <div className={styles.container}>
       <header className={styles.header}>
         <h1 className="pageHeader">
-          {decodedLocation} - {group.year}
+          {group.title
+            ? `${group.title} - ${group.location} - ${group.year}`
+            : `${group.location} - ${group.year}`}
         </h1>
         <p className={styles.workCount}>
           {works.length} {works.length === 1 ? "work" : "works"}

@@ -5,6 +5,19 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./SideNavClient.module.css";
 
+// Helper to create slug from group data
+function createSlug(year, location, title) {
+  const parts = [year, location];
+  if (title) {
+    parts.push(title);
+  }
+  return parts
+    .join("-")
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, "-")
+    .replace(/-+/g, "-");
+}
+
 export default function SideNavClient({
   pathname,
   films,
@@ -70,7 +83,7 @@ export default function SideNavClient({
         )}
       </div>
 
-      {/* ✅ WORKS ON PAPER — FLAT, DEFENSIVE */}
+      {/* WORKS ON PAPER */}
       <div className={styles.section}>
         <button className={styles.topButton} onClick={() => toggle("works")}>
           Works on Paper
@@ -112,9 +125,9 @@ export default function SideNavClient({
                 );
               }
 
-              const href = `/works-on-paper/${year}/${encodeURIComponent(
-                group.location
-              )}`;
+              // Generate slug for this group
+              const slug = createSlug(year, group.location, group.title);
+              const href = `/works-on-paper/${slug}`;
               const isActive = pathname === href;
 
               return (
