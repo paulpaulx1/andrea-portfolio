@@ -8,29 +8,44 @@ import VideoPlayer from "@components/VideoPlayer";
 import ImageCarousel from "@components/ImageCarousel";
 import Lightbox from "@components/Lightbox";
 
+// Custom components for PortableText to style links
+const portableTextComponents = {
+  marks: {
+    link: ({ children, value }) => {
+      const rel = !value.href.startsWith('/') ? 'noopener noreferrer' : undefined;
+      const target = !value.href.startsWith('/') ? '_blank' : undefined;
+      return (
+        <a 
+          href={value.href} 
+          rel={rel} 
+          target={target}
+          className={styles.textLink}
+        >
+          {children}
+        </a>
+      );
+    },
+  },
+};
+
 export default function FilmPageClient({ film }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  // Use enhanced images if available, otherwise fall back to legacy images
-  // Enhanced images have { image, alt, caption } structure, so extract just the image
   const images =
     film.enhancedImages?.length > 0
       ? film.enhancedImages.map((item) => item.image)
       : film.images || [];
 
-  // Function to open the lightbox
   const openLightbox = (index) => {
     setLightboxIndex(index);
     setLightboxOpen(true);
   };
 
-  // Function to close the lightbox
   const closeLightbox = () => {
     setLightboxOpen(false);
   };
 
-  // Check if the film has a video (either Archive.org or YouTube)
   const hasVideo = film.archiveUrl || film.youtubeUrl;
 
   return (
@@ -39,8 +54,6 @@ export default function FilmPageClient({ film }) {
         <p className="text-gray-600"></p>
       </header>
 
-      {/* Conditional rendering based on video presence */}
-      {/* If no video, show carousel at the top */}
       {!hasVideo && images.length > 0 && (
         <ImageCarousel images={images} openLightbox={openLightbox} />
       )}
@@ -52,7 +65,6 @@ export default function FilmPageClient({ film }) {
         {film.duration && ` • ${film.duration}`}
       </div>
 
-      {/* Video player for either Archive.org or YouTube */}
       {hasVideo && (
         <VideoPlayer
           archiveUrl={film.archiveUrl}
@@ -60,43 +72,19 @@ export default function FilmPageClient({ film }) {
         />
       )}
 
-      {/* Film description - only using rich text now */}
       {film.descriptionRich && film.descriptionRich.length > 0 && (
-        <div className={styles.filmDescription} >
-          <PortableText value={film.descriptionRich} />
+        <div className={styles.filmDescription}>
+          <PortableText 
+            value={film.descriptionRich} 
+            components={portableTextComponents}
+          />
         </div>
       )}
 
-      {/* If there is a video, show carousel after the text */}
       {hasVideo && images.length > 0 && (
         <ImageCarousel images={images} openLightbox={openLightbox} />
       )}
 
-      {/* External links */}
-      {/* <div className="space-x-4">
-        {film.archiveUrl && ( 
-          <a
-            href={film.archiveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:underline"
-          >
-            View on Archive.org
-          </a>
-        )}
-        {film.youtubeUrl && (
-          <a
-            href={film.youtubeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:underline"
-          >
-            Watch on YouTube
-          </a>
-        )}
-      </div> */}
-
-      {/* Lightbox for full-screen images */}
       {lightboxOpen && (
         <Lightbox
           images={images}

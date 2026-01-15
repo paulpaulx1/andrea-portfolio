@@ -95,3 +95,13 @@
 .filmDescription p {
   max-width: 700px;
 }
+
+.textLink {
+  color: #2563eb; /* or whatever blue you want */
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.textLink:hover {
+  color: #1d4ed8; /* darker blue on hover */
+}

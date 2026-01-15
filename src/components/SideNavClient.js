@@ -175,9 +175,9 @@ export default function SideNavClient({
         <div className={styles.topButton}>Archive</div>
       </div> */}
 
-      {/* <div className={styles.section}>
+      <div className={styles.section}>
         <div className={styles.topButton}>Information</div>
-      </div> */}
+      </div>
     </nav>
   );
 }
