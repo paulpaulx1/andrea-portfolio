@@ -5,6 +5,20 @@ import MobileNav from "@components/MobileNav";
 import "./globals.css";
 import { headers } from "next/headers";
 
+export const metadata = {
+  title: {
+    default: "Andrea Callard",
+    template: "%s | Andrea Callard", // Pages can override with just their title
+  },
+  description:
+    "Artist and filmmaker Andrea Callard's portfolio featuring films, works on paper, and the Avocet Portfolio collaborative printmaking project.",
+  openGraph: {
+    title: "Andrea Callard",
+    description: "Artist and filmmaker Andrea Callard's portfolio",
+    type: "website",
+  },
+};
+
 export default function RootLayout({ children }) {
   const pathname = headers().get("x-pathname") || "/";
 
