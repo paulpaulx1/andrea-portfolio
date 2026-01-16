@@ -4,7 +4,6 @@ export default function InformationPage() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>Andrea Callard</h1>
         <a
           href="/andrea-callard-cv.pdf"
           download="Andrea_Callard_CV.pdf"
