@@ -176,7 +176,9 @@ export default function SideNavClient({
       </div> */}
 
       <div className={styles.section}>
-        <div className={styles.topButton}>Information</div>
+        <Link href="/information" className={styles.topButton}>
+          Information
+        </Link>
       </div>
     </nav>
   );
