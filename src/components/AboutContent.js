@@ -1,41 +1,77 @@
 // components/AboutContent.jsx
-export default function AboutContent() {
-  return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold border-b pb-4">About Andrea Callard</h2>
+import { sanityClient } from "../lib/sanity";
+import { PortableText } from "@portabletext/react";
 
-      <p>
-        Andrea Callard is a filmmaker, photographer, and artist whose work spans
-        five decades. Her experimental films explore various spatial, cultural,
-        and natural landscapes, often represented through a personal and
-        political viewpoint.
-      </p>
-
-      <p>
-        Her work has been screened at numerous prestigious venues including MOMA
-        NYC, the Academy of Motion Picture Arts and Sciences, Walker Art Center,
-        Austrian Film Museum Vienna, Glasgow Film Festival, and many others
-        around the world.
-      </p>
-
-      <p>
-        Callard&apos;s filmography includes works on Super 8mm, 16mm film, and
-        video, many of which have been preserved and digitized. Her films often
-        examine the relationship between humans and their environments, the
-        absurdity of explanation, and the limits of the measuring mind.
-      </p>
-
-      <h3 className="text-xl font-semibold mt-8 mb-2">Contact</h3>
-      <p>
-        For inquiries about Andrea Callard&apos;s work, screenings, or other
-        information, please contact:{' '}
+// Custom components for rendering Portable Text
+const components = {
+  block: {
+    normal: ({ children }) => <p className="mb-4">{children}</p>,
+    h2: ({ children }) => (
+      <h2 className="text-2xl font-bold border-b pb-4 mb-6">{children}</h2>
+    ),
+    h3: ({ children }) => (
+      <h3 className="text-xl font-semibold mt-8 mb-2">{children}</h3>
+    ),
+  },
+  marks: {
+    link: ({ children, value }) => {
+      const rel = !value.href.startsWith("/")
+        ? "noreferrer noopener"
+        : undefined;
+      return (
         <a
-          href="mailto:andreacallard@gmail.com"
+          href={value.href}
+          rel={rel}
           className="text-blue-600 hover:underline"
         >
-          andreacallard@gmail.com
+          {children}
         </a>
-      </p>
+      );
+    },
+  },
+};
+
+async function getAboutContent() {
+  const query = `*[_type == "aboutPage"][0]{
+    title,
+    content,
+    contactEmail
+  }`;
+
+  const data = await sanityClient.fetch(query);
+  return data;
+}
+
+export default async function AboutContent() {
+  const aboutData = await getAboutContent();
+
+  if (!aboutData) {
+    return (
+      <div className="space-y-6">
+        <h2 className="text-2xl font-bold border-b pb-4">
+          About Andrea Callard
+        </h2>
+        <p>Content not yet available. Please add content in Sanity Studio.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <h2>{aboutData.title}</h2>
+      <PortableText value={aboutData.content} components={components} />
+
+      {/* {aboutData.contactEmail && (
+        <p className="mt-8">
+          For inquiries, please contact:{" "}
+          <a
+            href={`mailto:${aboutData.contactEmail}`}
+            className="text-blue-600 hover:underline"
+          >
+            {aboutData.contactEmail}
+          </a>
+        </p>
+      )} */}
     </div>
   );
 }
