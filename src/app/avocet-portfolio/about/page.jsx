@@ -41,19 +41,19 @@ export default async function AvocetLandingPage({ searchParams }) {
         <div style={{ maxWidth: "820px", margin: "0 auto", padding: "0 1rem" }}>
           <div className="space-y-6 my-2">
             <p>
-              The Avocet Portfolio was most recently exhibited June 17–July 30,
-              2023 at the Kentler International Drawing Space in Red Hook,
-              Brooklyn. The project brings together artists from Art Awareness
-              in a collaborative printmaking portfolio created between
-              1985–1991.
+              The Avocet Portfolio was most recently exhibited in 2023 at the
+              Kentler International Drawing Space in Red Hook, Brooklyn.
+              Throughout the fall of 2023, the Bronx River Arts Center showed
+              the portfolio. The project brought together artists in a
+              collaborative printmaking studio. Located at Art Awareness in
+              upstate New York, it took place during the summers of 1985–1991.
             </p>
 
             <p>
-              Each artist contributed a print that reflects their own visual
-              language while remaining in dialogue with the others in the
-              portfolio. The works span a range of approaches and techniques,
-              but share an attention to place, memory, and the lived
-              environment.
+              Each artist made prints reflecting their own visual language while
+              remaining in dialogue with the other artists present. The works
+              span a range of approaches and techniques, but share an attention
+              to place, memory, and the lived environment.
             </p>
 
             <p>
