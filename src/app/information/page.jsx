@@ -16,7 +16,6 @@ export default function InformationPage() {
       <div className={styles.contact}>
         <p>andreacallard@gmail.com</p>
         <p>212.925.8974</p>
-        <p>6254 Washington Avenue, St. Louis, MO 63130</p>
       </div>
 
       <section className={styles.section}>
