@@ -1,31 +1,39 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useMemo } from "react";
 import styles from "./SideNavClient.module.css";
 
 // Helper to create slug from group data
 function createSlug(year, location, title) {
   const parts = [year, location];
-  if (title) {
-    parts.push(title);
-  }
+  if (title) parts.push(title);
   return parts
     .join("-")
     .toLowerCase()
     .replace(/[^a-z0-9-]/g, "-")
-    .replace(/-+/g, "-");
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function safeSlug(value) {
+  // Accept either:
+  // - "susan-spencer-crowe"
+  // - { current: "susan-spencer-crowe" }
+  // - null/undefined
+  if (!value) return "";
+  if (typeof value === "string") return value;
+  if (typeof value === "object" && typeof value.current === "string")
+    return value.current;
+  return "";
 }
 
 export default function SideNavClient({
   pathname,
-  films,
+  films = [],
   worksGroups,
-  avocetArtists,
+  avocetArtists = [],
 }) {
-  const router = useRouter();
-
   const [open, setOpen] = useState({
     films: false,
     works: false,
@@ -42,16 +50,15 @@ export default function SideNavClient({
   }, [pathname]);
 
   function toggle(section) {
-    setOpen((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
+    setOpen((prev) => ({ ...prev, [section]: !prev[section] }));
   }
 
   // Normalise worksGroups into a flat array
-  const worksArray = Array.isArray(worksGroups)
-    ? worksGroups
-    : Object.values(worksGroups || {}).flat();
+  const worksArray = useMemo(() => {
+    return Array.isArray(worksGroups)
+      ? worksGroups
+      : Object.values(worksGroups || {}).flat();
+  }, [worksGroups]);
 
   return (
     <nav className={styles.nav}>
@@ -70,15 +77,32 @@ export default function SideNavClient({
 
         {open.films && (
           <div className={styles.list}>
-            {films.map((film) => (
-              <Link
-                key={film._id}
-                href={`/films/${encodeURIComponent(film.title)}`}
-                className={styles.itemButton}
-              >
-                {film.title}
-              </Link>
-            ))}
+            {films.map((film) => {
+              // ✅ Prefer a real slug field (recommended).
+              // Accept either film.slug (string) or film.slug.current (Sanity shape)
+              const filmSlug = safeSlug(film.slug);
+
+              // Fallback ONLY if you haven't added film.slug yet
+              // (keeps your UI alive, but you should add slugs)
+              const fallback = film.title ? encodeURIComponent(film.title) : "";
+              const href = filmSlug
+                ? `/films/${encodeURIComponent(filmSlug)}`
+                : `/films/${fallback}`;
+
+              const isActive = pathname === href;
+
+              return (
+                <Link
+                  key={film._id}
+                  href={href}
+                  className={`${styles.itemButton} ${
+                    isActive ? styles.active : ""
+                  }`}
+                >
+                  {film.title}
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>
@@ -125,7 +149,6 @@ export default function SideNavClient({
                 );
               }
 
-              // Generate slug for this group
               const slug = createSlug(year, group.location, group.title);
               const href = `/works-on-paper/${slug}`;
               const isActive = pathname === href;
@@ -154,27 +177,40 @@ export default function SideNavClient({
 
         {open.avocet && (
           <div className={styles.list}>
-            <Link href="/avocet-portfolio/about" className={styles.itemButton}>
+            <Link
+              href="/avocet-portfolio/about"
+              className={`${styles.itemButton} ${
+                pathname === "/avocet-portfolio/about" ? styles.active : ""
+              }`}
+            >
               About
             </Link>
-            {avocetArtists.map((artist) => (
-              <Link
-                key={artist._id}
-                href={`/avocet-portfolio/${artist.slug}`}
-                className={styles.itemButton}
-              >
-                {artist.firstName} {artist.lastName}
-              </Link>
-            ))}
+
+            {avocetArtists.map((artist) => {
+              const slug = safeSlug(artist.slug);
+              const href = slug
+                ? `/avocet-portfolio/${encodeURIComponent(slug)}`
+                : "/avocet-portfolio/about";
+
+              const isActive = pathname === href;
+
+              return (
+                <Link
+                  key={artist._id}
+                  href={href}
+                  className={`${styles.itemButton} ${
+                    isActive ? styles.active : ""
+                  }`}
+                >
+                  {artist.firstName} {artist.lastName}
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>
 
-      {/* STATIC */}
-      {/* <div className={styles.section}>
-        <div className={styles.topButton}>Archive</div>
-      </div> */}
-
+      {/* INFORMATION */}
       <div className={styles.section}>
         <Link href="/information" className={styles.topButton}>
           Information
