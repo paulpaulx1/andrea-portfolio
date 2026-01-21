@@ -1,24 +1,26 @@
-'use client';
+"use client";
 
-import React, { useRef, useState, useEffect } from 'react';
-import useEmblaCarousel from 'embla-carousel-react';
-import Autoplay from 'embla-carousel-autoplay';
-import Image from 'next/image';
-import styles from './EmblaCarousel.module.css';
+import React, { useRef, useState, useEffect } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+import Image from "next/image";
+import styles from "./EmblaCarousel.module.css";
 
 export default function EmblaCarousel({ images, autoplayDelay = 5000 }) {
   const autoplay = useRef(
-    Autoplay({ delay: autoplayDelay, stopOnInteraction: true })
+    Autoplay({ delay: autoplayDelay, stopOnInteraction: true }),
   );
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [autoplay.current]);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
+    autoplay.current,
+  ]);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
     if (!emblaApi) return;
     const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
-    emblaApi.on('select', onSelect);
+    emblaApi.on("select", onSelect);
     onSelect();
-    return () => emblaApi.off('select', onSelect);
+    return () => emblaApi.off("select", onSelect);
   }, [emblaApi]);
 
   const handleClick = (e) => {
@@ -37,7 +39,6 @@ export default function EmblaCarousel({ images, autoplayDelay = 5000 }) {
         ref={emblaRef}
         onClick={handleClick}
       >
-        
         <div className={styles.embla__container}>
           {images.map((img, i) => (
             <div key={img._key || i} className={styles.embla__slide}>
@@ -45,7 +46,6 @@ export default function EmblaCarousel({ images, autoplayDelay = 5000 }) {
                 src={img.url}
                 alt={img.alt || `Slide ${i + 1}`}
                 fill
-                quality={90}
                 priority={i === 0}
                 sizes="(max-width:768px)100vw,(max-width:1200px)800px,800px"
               />
@@ -58,7 +58,7 @@ export default function EmblaCarousel({ images, autoplayDelay = 5000 }) {
         {images.map((_, i) => (
           <button
             key={i}
-            className={`${styles.dot} ${i === selectedIndex ? styles.dotActive : ''}`}
+            className={`${styles.dot} ${i === selectedIndex ? styles.dotActive : ""}`}
             onClick={(e) => {
               e.stopPropagation();
               emblaApi && emblaApi.scrollTo(i);

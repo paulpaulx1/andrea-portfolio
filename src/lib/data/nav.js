@@ -4,7 +4,7 @@ import { sanityClient } from "../sanity";
 
 export const getNavFilms = cache(async () => {
   const query = `
-    *[_type == "film"] | order(title asc) {
+    *[_type == "film"] | order(year desc) {
       _id,
       title
     }
