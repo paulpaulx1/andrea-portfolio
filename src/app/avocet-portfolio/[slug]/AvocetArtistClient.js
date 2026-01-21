@@ -9,7 +9,7 @@ import styles from "./AvocetArtist.module.css";
 export default function AvocetArtistClient({ artist, artworks }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-
+  console.log("ARTIST", artist);
   const openLightbox = (index) => {
     setLightboxIndex(index);
     setLightboxOpen(true);
@@ -32,7 +32,7 @@ export default function AvocetArtistClient({ artist, artworks }) {
           },
         },
       })),
-    [artworks]
+    [artworks],
   );
 
   const hero = artworks?.[0];

@@ -2,25 +2,28 @@
 import { sanityClient } from "@lib/sanity";
 import AvocetArtistClient from "./AvocetArtistClient";
 import styles from "./AvocetArtist.module.css";
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 
 export const revalidate = 300;
+
+function safeDecode(input) {
+  if (!input) return "";
+  try {
+    return decodeURIComponent(input);
+  } catch {
+    return input; // already decoded / malformed
+  }
+}
 
 function normalizeSlug(input) {
   if (!input) return "";
 
-  let s = input;
-  try {
-    s = decodeURIComponent(input);
-  } catch {
-    // ignore decode errors; treat as already-decoded
-  }
-
-  return s
+  return input
     .trim()
     .toLowerCase()
     .replace(/[\u2010-\u2015]/g, "-") // normalize odd unicode dashes
     .replace(/['’]/g, "") // remove apostrophes
+    .replace(/_/g, "-") // underscores -> hyphens (WP-style)
     .replace(/[^a-z0-9]+/g, "-") // spaces & punctuation -> hyphen
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "");
@@ -37,11 +40,23 @@ export async function generateStaticParams() {
 }
 
 async function getArtistData(slugParam) {
-  const normalized = normalizeSlug(slugParam);
+  // raw decoded (keeps underscores etc)
+  const decodedRaw = safeDecode(slugParam).trim().toLowerCase();
 
+  // normalized (your canonical preferred form)
+  const normalized = normalizeSlug(decodedRaw);
+
+  // also try "underscore version" just in case something stored that way
+  const underscoreVariant = normalized.replace(/-/g, "_");
+
+  // Try all candidates in one query (fast + avoids weird edge cases)
   const artist = await sanityClient.fetch(
     `
-      *[_type == "avocetArtist" && slug.current == $slug][0]{
+      *[
+        _type == "avocetArtist" &&
+        defined(slug.current) &&
+        slug.current in $candidates
+      ][0]{
         _id,
         firstName,
         lastName,
@@ -49,7 +64,7 @@ async function getArtistData(slugParam) {
         "slug": slug.current
       }
     `,
-    { slug: normalized },
+    { candidates: [decodedRaw, normalized, underscoreVariant].filter(Boolean) },
   );
 
   if (!artist) return null;
@@ -75,40 +90,38 @@ async function getArtistData(slugParam) {
     { artistId: artist._id },
   );
 
-  return { artist, artworks, normalized };
+  return { artist, artworks, decodedRaw, normalized };
 }
 
 export default async function AvocetArtistPage({ params }) {
-  const slugParam = params?.slug || "";
+  // ✅ Next 15: params must be awaited
+  const { slug: slugParam = "" } = await params;
+
   const data = await getArtistData(slugParam);
+  if (!data) notFound();
 
-  if (!data) {
-    return (
-      <div className={styles.container}>
-        <h1 className="pageHeader" style={{ textAlign: "center" }}>
-          Artist Not Found
-        </h1>
-      </div>
-    );
-  }
+  // ✅ Canonical redirect WITHOUT normalization mismatch loops:
+  // Compare decoded incoming RAW to canonical RAW.
+  // (Do NOT compare canonical to normalized; that causes loops when canonical contains '_' etc.)
+  const incomingRaw = safeDecode(slugParam).trim().toLowerCase();
+  const canonicalRaw = (data.artist.slug || "").trim().toLowerCase();
 
-  // ✅ Redirect any non-canonical slug (encoded spaces, wrong casing, etc.)
-  // to the canonical slug stored in Sanity
-  const canonical = data.artist.slug;
-  const normalizedIncoming = normalizeSlug(slugParam);
-  if (canonical && normalizedIncoming && canonical !== normalizedIncoming) {
-    redirect(`/avocet-portfolio/${canonical}`);
+  if (canonicalRaw && incomingRaw && canonicalRaw !== incomingRaw) {
+    redirect(`/avocet-portfolio/${encodeURIComponent(canonicalRaw)}`);
   }
 
   return <AvocetArtistClient artist={data.artist} artworks={data.artworks} />;
 }
 
 export async function generateMetadata({ params }) {
-  const slugParam = params?.slug || "";
+  const { slug: slugParam = "" } = await params;
+
   const data = await getArtistData(slugParam);
   if (!data) return {};
 
-  const name = `${data.artist.firstName} ${data.artist.lastName}`.trim();
+  const name =
+    `${data.artist.firstName || ""} ${data.artist.lastName || ""}`.trim();
+
   return {
     title: `${name} | Avocet Portfolio`,
     description: `View works by ${name} in the Avocet Portfolio.`,
