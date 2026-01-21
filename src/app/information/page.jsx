@@ -876,7 +876,7 @@ export default function InformationPage() {
             Institute, Copenhagen
           </li>
           <li>
-            Alex Young, <em>Re-relating in Art Practice</em>, Rotterdam 2021,{" "}
+            Katrin Wolkowicz, <em>Re-relating in Art Practice</em>, Rotterdam 2021,{" "}
             <em>Ailanthus Thru Azalea</em>, an interview with Andrea Callard by
             Walter Forsberg, pp. 21-30
           </li>
